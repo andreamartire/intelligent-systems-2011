@@ -3,6 +3,7 @@ package vacuumCleaner;
 import java.util.Collections;
 
 import java.util.LinkedList;
+import java.util.Observable;
 import java.util.Random;
 
 public class Floor {
@@ -31,11 +32,13 @@ public class Floor {
 
         Collections.shuffle(lista);
         Random randomGen = new Random();
-        int size = lista.size() - 1;
+        int size = lista.size();
 
         if (numDirtySquares + numOstacles > size){
             numDirtySquares = ( size * numDirtySquares ) / (numDirtySquares + numOstacles);
             numOstacles = size - numDirtySquares;
+            System.out.println("Dirty " + numDirtySquares);
+            System.out.println("Obstacle " + numOstacles);
         }
 
         for (int i = 0; i < numDirtySquares; i++) {
@@ -54,6 +57,24 @@ public class Floor {
             floor[l][w].type = Square.Type.OBSTACLE;
         }
     }
+    
+    public int squaresNowCleaned(){
+		int cleanedSquare = 0;
+		for (int i = 0; i < lenght; i++)
+            for (int j = 0; j < width; j++)
+				if(get(i,j).type == Square.Type.CLEAN)
+					cleanedSquare++;
+		return cleanedSquare;
+	}
+	
+    public int dirtySquares(){
+		int dirtySquare = 0;
+		for (int i = 0; i < lenght; i++)
+            for (int j = 0; j < width; j++)
+				if(get(i,j).type == Square.Type.DIRTY)
+					dirtySquare++;
+		return dirtySquare;
+	}
 
     public Square get(int i, int j){
         return this.floor[i][j];

@@ -7,7 +7,7 @@ public class Environment {
 	public enum VisibilityType {
 		MY_CELL,
 		MY_NEIGHBOURS,
-		ALL 
+		ALL
 	}
 	
 	public enum DynamicType {
@@ -43,7 +43,7 @@ public class Environment {
 		this.dynType = dynType;
 		this.visType = visType;
 		
-		this.floor.generateObject(20, 0);
+		this.floor.generateObject(5, 0);
 	}
 	
 	public static Environment create(int lenght, int width, Agent agent, DynamicType dynType, VisibilityType visType){
@@ -93,6 +93,10 @@ public class Environment {
 		currAction = action;
 	}
 	
+	private int performanceMeasure(){
+		return floor.squaresNowCleaned() - numOpAgent;
+	}
+	
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
 		for(int i=0; i<lenght; i++){
@@ -101,6 +105,8 @@ public class Environment {
 					sb.append("[-o-] ");
 				else if(floor.get(i, j).type == Square.Type.DIRTY)
 						sb.append("XXXXX ");
+				else if(floor.get(i, j).type == Square.Type.OBSTACLE)
+					sb.append("OOOOO ");
 				else
 					sb.append("----- ");
 			sb.append("\n");
@@ -114,14 +120,15 @@ public class Environment {
 	
 	public void start(){
 		show();
-		while(!agent.goalReached() && numOpAgent<=opBound){
+		while(!agent.goalReached() && numOpAgent<opBound){
 			agent.perceives(getPerceptions());
 			agent.update();
 			getAction(agent.action());
 			System.out.println("Action received: " + currAction);
 			update();
 			show();
-			System.out.println("-----------------------");
+			System.out.println("-------------------");
 		}
+		System.out.println("Performance: " + performanceMeasure() );
 	}
 }
