@@ -18,8 +18,8 @@ public class Agent {
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
 	VisibilityType visType;
-	ActionType currAction;
-	ArrayList<ActionAgent> actionList;
+	Action.Type currAction;
+	ArrayList<Action> actionList;
 	
 	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType){
 		this.x = x;
@@ -27,8 +27,8 @@ public class Agent {
 		this.wLenght = wLenght;
 		this.wWidth = wWidth;
 		this.visType = visType;
-		currAction = ActionType.NOOP;
-		actionList = new ArrayList<ActionAgent>();
+		currAction = Action.Type.NOOP;
+		actionList = new ArrayList<Action>();
 		pList = new ArrayList<Perception>();
 		pList.add(new Perception(x, y, Square.Type.DIRTY));
 	}
@@ -46,84 +46,82 @@ public class Agent {
 
 	public void update(){
 		switch (visType) {
-			case MY_CELL:behaviour_MyCell();break;
-			case MY_NEIGHBOURS:behaviour_MyNeighbours();break;
-			case ALL:break;
+			case MY_CELL:stupidBehaviour();break;
+			case MY_NEIGHBOURS:anotherStupidBehaviour();break;
+			case ALL:anotherStupidBehaviour();break;
 		}
 	}
 	
-	/**
-	 * for example
-	 */
-	public void behaviour_MyCell(){
+	public void stupidBehaviour(){
 		if(pList.get(0).state == Square.Type.DIRTY)
-			currAction = ActionType.SUCK;
+			currAction = Action.Type.SUCK;
 		else{
-			LinkedList<ActionType> list = new LinkedList<ActionType>();
-			list.add(ActionType.NORTH);
-			list.add(ActionType.SOUTH);
-			list.add(ActionType.EAST);
-			list.add(ActionType.WEST);
+			LinkedList<Action.Type> list = new LinkedList<Action.Type>();
+			list.add(Action.Type.NORTH);
+			list.add(Action.Type.SOUTH);
+			list.add(Action.Type.EAST);
+			list.add(Action.Type.WEST);
 			Collections.shuffle(list);
 			currAction = list.getFirst();
 		}
 	}
 	
-	public void behaviour_MyNeighbours(){
+	public void anotherStupidBehaviour(){
 		goalReached = updateGoal();
 		//Calculate best action from current state
 		int max = Integer.MIN_VALUE;
-		currAction = ActionType.NOOP;
+		currAction = Action.Type.NOOP;
 		
+		//Avoided illegal actions
 		if(x!=0){
-			ActionAgent actNord = new ActionAgent(ActionType.NORTH, x, y);
+			Action actNord = new Action(Action.Type.NORTH, x, y);
 			System.out.println("Nord: " + actionScore(actNord));
 			if(actionScore(actNord)>max){
-				currAction = ActionType.NORTH;
+				currAction = Action.Type.NORTH;
 				max = actionScore(actNord);
 			}
 		}
 		if(x!=wLenght-1){
-			ActionAgent actSud = new ActionAgent(ActionType.SOUTH, x, y);
+			Action actSud = new Action(Action.Type.SOUTH, x, y);
 			System.out.println("Sud: " + actionScore(actSud));
 			if(actionScore(actSud)>max){
-				currAction = ActionType.SOUTH;
+				currAction = Action.Type.SOUTH;
 				max = actionScore(actSud);
 			}
 		}
 		if(y!=wWidth-1){
-			ActionAgent actEst = new ActionAgent(ActionType.EAST, x, y);
+			Action actEst = new Action(Action.Type.EAST, x, y);
 			System.out.println("Est: " + actionScore(actEst));
 			if(actionScore(actEst)>max){
-				currAction = ActionType.EAST;
+				currAction = Action.Type.EAST;
 				max = actionScore(actEst);
 			}
 		}
 			
 		if(y!=0){
-			ActionAgent actOvest = new ActionAgent(ActionType.WEST, x, y);
+			Action actOvest = new Action(Action.Type.WEST, x, y);
 			System.out.println("Ovest: " + actionScore(actOvest));
 			if(actionScore(actOvest)>max){
-				currAction = ActionType.WEST;
+				currAction = Action.Type.WEST;
 				max = actionScore(actOvest);
 			}
 		}
 		
-		ActionAgent actSuck = new ActionAgent(ActionType.SUCK, x, y);
+		Action actSuck = new Action(Action.Type.SUCK, x, y);
 		if(actionScore(actSuck)>max){
 			System.out.println("Suck: " + actionScore(actSuck));
-			currAction = ActionType.SUCK;
+			currAction = Action.Type.SUCK;
 			max = actionScore(actSuck);
 		}
 		
-		if(currAction == ActionType.SUCK && pList.get(0).state == Square.Type.DIRTY)
+		if(currAction == Action.Type.SUCK && pList.get(0).state == Square.Type.DIRTY)
 			squaresCleanedByMe++;
 	}
 	
-	public int actionScore(ActionAgent actionAgent){
+	public int actionScore(Action actionAgent){
 		int bonus = 0;
 //		If vacuum-cleaner sucks on a dirty square
-		if(actionAgent.type == ActionType.SUCK && pList.get(0).state == Square.Type.DIRTY)
+		if(actionAgent.type == Action.Type.SUCK && pList.get(0).state == Square.Type.DIRTY)
 			bonus += 1;
 //		If vacuum-cleaner goes on a dirty square
 		if(getSquarePerceivedType(actionAgent.type) == Square.Type.DIRTY)
@@ -132,7 +130,7 @@ public class Agent {
 		return squaresNowCleaned() + squaresCleanedByMe + bonus - actionList.size() - 1;
 	}
 	
-	public int getXVariation(ActionType actionType){
+	public int xVariation(Action.Type actionType){
 		switch (actionType){
 			case NORTH:return -1;
 			case SOUTH:return 1;
@@ -140,7 +138,7 @@ public class Agent {
 		return 0;
 	}
 	
-	public int getYVariation(ActionType actionType){
+	public int yVariation(Action.Type actionType){
 		switch (actionType){
 			case EAST:return 1;
 			case WEST:return -1;
@@ -148,10 +146,10 @@ public class Agent {
 		return 0;
 	}
 	
-	public Square.Type getSquarePerceivedType(ActionType actionType){
+	public Square.Type getSquarePerceivedType(Action.Type actionType){
 		for(int i=0; i<pList.size(); i++)
-			if(pList.get(i).x == x + getXVariation(actionType) &&
-					pList.get(i).y == y + getYVariation(actionType))
+			if(pList.get(i).x == x + xVariation(actionType) &&
+					pList.get(i).y == y + yVariation(actionType))
 				return pList.get(i).state;
 		try {
 			new Exception("Error: not founded the state requested");
@@ -192,8 +190,8 @@ public class Agent {
 		return false;
 	}
 	
-	public ActionType action(){
-		actionList.add(new ActionAgent(currAction, x, y));
+	public Action.Type action(){
+		actionList.add(new Action(currAction, x, y));
 		return currAction;
 	}
 }

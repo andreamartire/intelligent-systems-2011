@@ -14,7 +14,7 @@ public class Environment {
 	Agent agent;
 	int numOpAgent = 0;
 	static int opBound = 10;
-	ActionType currAction;
+	Action.Type currAction;
 	DynamicType dynType;
 	Floor floor;
 	
@@ -70,19 +70,19 @@ public class Environment {
 
 	private void update() {
 		numOpAgent++;
-		if(currAction == ActionType.SUCK)
+		if(currAction == Action.Type.SUCK)
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);
-		if(currAction == ActionType.NORTH && agent.x-1>=0 && !floor.obstacle(agent.x-1,agent.y))
+		if(currAction == Action.Type.NORTH && agent.x-1>=0 && !floor.obstacle(agent.x-1,agent.y))
 			agent.x--;
-		if(currAction == ActionType.SOUTH && agent.x+1<lenght && !floor.obstacle(agent.x+1,agent.y))
+		if(currAction == Action.Type.SOUTH && agent.x+1<lenght && !floor.obstacle(agent.x+1,agent.y))
 			agent.x++;
-		if(currAction == ActionType.EAST && agent.y+1<width && !floor.obstacle(agent.x,agent.y+1))
+		if(currAction == Action.Type.EAST && agent.y+1<width && !floor.obstacle(agent.x,agent.y+1))
 			agent.y++;
-		if(currAction == ActionType.WEST && agent.y-1>=0 && !floor.obstacle(agent.x,agent.y-1))
+		if(currAction == Action.Type.WEST && agent.y-1>=0 && !floor.obstacle(agent.x,agent.y-1))
 			agent.y--;
 	}
 
-	private void getAction(ActionType action) {
+	private void getAction(Action.Type action) {
 		currAction = action;
 	}
 	
