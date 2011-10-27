@@ -4,19 +4,27 @@ import java.util.ArrayList;
 
 public class Agent {
 	
+	public enum VisibilityType {
+		MY_CELL,
+		MY_NEIGHBOURS,
+		ALL
+	}
+	
 	ArrayList<Perception> pList;
 	int x, y;
 	int wLenght, wWidth;
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
+	VisibilityType visType;
 	ActionType currAction;
 	ArrayList<ActionAgent> actionList;
 	
-	public Agent(int x, int y, int wLenght, int wWidth){
+	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType){
 		this.x = x;
 		this.y = y;
 		this.wLenght = wLenght;
 		this.wWidth = wWidth;
+		this.visType = visType;
 		currAction = ActionType.NOOP;
 		actionList = new ArrayList<ActionAgent>();
 		pList = new ArrayList<Perception>();
@@ -37,7 +45,16 @@ public class Agent {
 	public void update(){
 		goalReached = updateGoal();
 		
-//		Calculate best action from current state
+		switch (visType) {
+			case MY_CELL:break;
+			case MY_NEIGHBOURS:behaviour_MyNeighbours();break;
+			case ALL:break;
+		}
+			
+	}
+		
+	public void behaviour_MyNeighbours(){
+		//Calculate best action from current state
 		int max = Integer.MIN_VALUE;
 		currAction = ActionType.NOOP;
 		
