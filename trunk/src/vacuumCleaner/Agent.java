@@ -135,13 +135,6 @@ public class Agent {
 			if(pList.get(i).x == x + Action.xVariation(actionType) &&
 					pList.get(i).y == y + Action.yVariation(actionType))
 				return pList.get(i).state;
-		try {
-			new Exception("Error: not founded the state requested");
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.exit(1);
-		}
 		return Square.Type.OBSTACLE;		
 	}
 	
