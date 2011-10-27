@@ -20,4 +20,21 @@ public class Action {
 		this.sx = sx;
 		this.sy = sy;
 	}
+	
+
+	static public int xVariation(Action.Type actionType){
+		switch (actionType){
+			case NORTH:return -1;
+			case SOUTH:return 1;
+		}
+		return 0;
+	}
+	
+	static public int yVariation(Action.Type actionType){
+		switch (actionType){
+			case EAST:return 1;
+			case WEST:return -1;
+		}
+		return 0;
+	}
 }

@@ -130,26 +130,10 @@ public class Agent {
 		return squaresNowCleaned() + squaresCleanedByMe + bonus - actionList.size() - 1;
 	}
 	
-	public int xVariation(Action.Type actionType){
-		switch (actionType){
-			case NORTH:return -1;
-			case SOUTH:return 1;
-		}
-		return 0;
-	}
-	
-	public int yVariation(Action.Type actionType){
-		switch (actionType){
-			case EAST:return 1;
-			case WEST:return -1;
-		}
-		return 0;
-	}
-	
 	public Square.Type getSquarePerceivedType(Action.Type actionType){
 		for(int i=0; i<pList.size(); i++)
-			if(pList.get(i).x == x + xVariation(actionType) &&
-					pList.get(i).y == y + yVariation(actionType))
+			if(pList.get(i).x == x + Action.xVariation(actionType) &&
+					pList.get(i).y == y + Action.yVariation(actionType))
 				return pList.get(i).state;
 		try {
 			new Exception("Error: not founded the state requested");
