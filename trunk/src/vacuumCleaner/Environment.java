@@ -72,18 +72,14 @@ public class Environment {
 		numOpAgent++;
 		if(currAction == ActionType.SUCK)
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);
-		if(currAction == ActionType.NORTH && agent.x-1>=0 && !obstacle(agent.x-1,agent.y))
+		if(currAction == ActionType.NORTH && agent.x-1>=0 && !floor.obstacle(agent.x-1,agent.y))
 			agent.x--;
-		if(currAction == ActionType.SOUTH && agent.x+1<lenght && !obstacle(agent.x+1,agent.y))
+		if(currAction == ActionType.SOUTH && agent.x+1<lenght && !floor.obstacle(agent.x+1,agent.y))
 			agent.x++;
-		if(currAction == ActionType.EAST && agent.y+1<width && !obstacle(agent.x,agent.y+1))
+		if(currAction == ActionType.EAST && agent.y+1<width && !floor.obstacle(agent.x,agent.y+1))
 			agent.y++;
-		if(currAction == ActionType.WEST && agent.y-1>=0 && !obstacle(agent.x,agent.y-1))
+		if(currAction == ActionType.WEST && agent.y-1>=0 && !floor.obstacle(agent.x,agent.y-1))
 			agent.y--;
-	}
-
-	private boolean obstacle(int i, int j) {
-		return this.floor.get(i,j).type == Square.Type.OBSTACLE;
 	}
 
 	private void getAction(ActionType action) {
@@ -98,9 +94,9 @@ public class Environment {
 		StringBuffer sb = new StringBuffer();
 		for(int i=0; i<lenght; i++){
 			for(int j=0; j<width; j++)
-//				if(agent.x == i && agent.y == j)
-//					sb.append("[[=]] ");
-//				else
+				if(agent.x == i && agent.y == j)
+					sb.append("[[=]] ");
+				else
 					if(floor.get(i, j).type == Square.Type.DIRTY)
 						sb.append("XXXXX ");
 				else if(floor.get(i, j).type == Square.Type.OBSTACLE)
