@@ -12,15 +12,14 @@ public class Environment {
 	int lenght;
 	int width;
 	Agent agent;
-	int numOpAgent = 0;
-	static int opBound = 10;
+	static int opBound = 100;
 	Action.Type currAction;
 	DynamicType dynType;
 	Floor floor;
 	
 	public static void main(String[] args) {
 		int l = 5, w = 5;
-		Agent agent = new Agent(0,0,l,w,Agent.VisibilityType.MY_CELL);
+		Agent agent = new Agent(0,0,l,w,Agent.VisibilityType.MY_NEIGHBOURS);
 		Environment myEnv = Environment.create(l,w,agent,DynamicType.STATIC);
 		myEnv.start();
 		System.out.println("-- End --");
@@ -53,7 +52,7 @@ public class Environment {
 				if(agent.x != 0)
 					perceptions.add(new Perception(agent.x-1, agent.y, floor.get(agent.x-1,agent.y).type));
 				if(agent.x != lenght-1)
-						perceptions.add(new Perception(agent.x+1, agent.y, floor.get(agent.x+1,agent.y).type));
+					perceptions.add(new Perception(agent.x+1, agent.y, floor.get(agent.x+1,agent.y).type));
 				if(agent.y != 0)
 					perceptions.add(new Perception(agent.x, agent.y-1, floor.get(agent.x,agent.y-1).type));
 				if(agent.y != width-1)
@@ -69,7 +68,6 @@ public class Environment {
 	}
 
 	private void update() {
-		numOpAgent++;
 		if(currAction == Action.Type.SUCK)
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);
 		if(currAction == Action.Type.NORTH && agent.x-1>=0 && !floor.obstacle(agent.x-1,agent.y))
@@ -87,7 +85,7 @@ public class Environment {
 	}
 	
 	private int performanceMeasure(){
-		return floor.squaresNowCleaned() - numOpAgent;
+		return floor.squaresNowCleaned() - agent.actionList.size();
 	}
 	
 	public String toString(){
@@ -114,7 +112,7 @@ public class Environment {
 	
 	public void start(){
 		show();
-		while(!agent.goalReached() && numOpAgent<opBound){
+		while(!agent.goalReached() && agent.actionList.size()<opBound){
 			agent.perceives(getPerceptions());
 			agent.update();
 			getAction(agent.action());
