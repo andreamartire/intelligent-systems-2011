@@ -1,6 +1,8 @@
 package vacuumCleaner;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 
 public class Agent {
 	
@@ -43,17 +45,32 @@ public class Agent {
 	}
 
 	public void update(){
-		goalReached = updateGoal();
-		
 		switch (visType) {
-			case MY_CELL:break;
+			case MY_CELL:behaviour_MyCell();break;
 			case MY_NEIGHBOURS:behaviour_MyNeighbours();break;
 			case ALL:break;
 		}
-			
 	}
-		
+	
+	/**
+	 * for example
+	 */
+	public void behaviour_MyCell(){
+		if(pList.get(0).state == Square.Type.DIRTY)
+			currAction = ActionType.SUCK;
+		else{
+			LinkedList<ActionType> list = new LinkedList<ActionType>();
+			list.add(ActionType.NORTH);
+			list.add(ActionType.SOUTH);
+			list.add(ActionType.EAST);
+			list.add(ActionType.WEST);
+	        Collections.shuffle(list);
+	        currAction = list.getFirst();
+		}
+	}
+	
 	public void behaviour_MyNeighbours(){
+		goalReached = updateGoal();
 		//Calculate best action from current state
 		int max = Integer.MIN_VALUE;
 		currAction = ActionType.NOOP;
@@ -146,6 +163,11 @@ public class Agent {
 		return Square.Type.OBSTACLE;		
 	}
 	
+	public void showActions(){
+		for(int i=0; i<actionList.size(); i++)
+			System.out.println(actionList.get(i).type);
+	}
+	
 	public int squaresNowCleaned(){
 		int cleanedSquare = 0;
 		for(int i=0; i<pList.size(); i++)
@@ -163,8 +185,10 @@ public class Agent {
 	}
 	
 	public boolean updateGoal(){
-		if(dirtySquares()==0)
+		if(dirtySquares()==0){
+			System.out.println("GOAL REACHED");
 			return true;
+		}
 		return false;
 	}
 	

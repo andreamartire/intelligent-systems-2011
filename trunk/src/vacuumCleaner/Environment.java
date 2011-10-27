@@ -20,7 +20,7 @@ public class Environment {
 	
 	public static void main(String[] args) {
 		int l = 5, w = 5;
-		Agent agent = new Agent(2,2,l,w,Agent.VisibilityType.MY_NEIGHBOURS);
+		Agent agent = new Agent(0,0,l,w,Agent.VisibilityType.MY_CELL);
 		Environment myEnv = Environment.create(l,w,agent,DynamicType.STATIC);
 		myEnv.start();
 		System.out.println("-- End --");
@@ -35,7 +35,7 @@ public class Environment {
 		
 		this.dynType = dynType;
 		
-		this.floor.generateObject(5, 0);
+		this.floor.generateObject(10, 5);
 	}
 	
 	public static Environment create(int lenght, int width, Agent agent, DynamicType dynType){
@@ -46,6 +46,7 @@ public class Environment {
 		ArrayList<Perception> perceptions = new ArrayList<Perception>();
 		switch (agent.visType) {
 			case MY_CELL:
+				System.out.println("X " + agent.x + " Y " + agent.y);
 				perceptions.add(new Perception(agent.x, agent.y, floor.get(agent.x,agent.y).type));break;
 			case MY_NEIGHBOURS:
 				perceptions.add(new Perception(agent.x, agent.y, floor.get(agent.x,agent.y).type));
@@ -71,14 +72,18 @@ public class Environment {
 		numOpAgent++;
 		if(currAction == ActionType.SUCK)
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);
-		if(currAction == ActionType.NORTH)
+		if(currAction == ActionType.NORTH && agent.x-1>=0 && !obstacle(agent.x-1,agent.y))
 			agent.x--;
-		if(currAction == ActionType.SOUTH)
+		if(currAction == ActionType.SOUTH && agent.x+1<lenght && !obstacle(agent.x+1,agent.y))
 			agent.x++;
-		if(currAction == ActionType.EAST)
+		if(currAction == ActionType.EAST && agent.y+1<width && !obstacle(agent.x,agent.y+1))
 			agent.y++;
-		if(currAction == ActionType.WEST)
+		if(currAction == ActionType.WEST && agent.y-1>=0 && !obstacle(agent.x,agent.y-1))
 			agent.y--;
+	}
+
+	private boolean obstacle(int i, int j) {
+		return this.floor.get(i,j).type == Square.Type.OBSTACLE;
 	}
 
 	private void getAction(ActionType action) {
@@ -93,9 +98,10 @@ public class Environment {
 		StringBuffer sb = new StringBuffer();
 		for(int i=0; i<lenght; i++){
 			for(int j=0; j<width; j++)
-				if(agent.x == i && agent.y == j)
-					sb.append("[-o-] ");
-				else if(floor.get(i, j).type == Square.Type.DIRTY)
+//				if(agent.x == i && agent.y == j)
+//					sb.append("[[=]] ");
+//				else
+					if(floor.get(i, j).type == Square.Type.DIRTY)
 						sb.append("XXXXX ");
 				else if(floor.get(i, j).type == Square.Type.OBSTACLE)
 					sb.append("OOOOO ");
@@ -121,6 +127,8 @@ public class Environment {
 			show();
 			System.out.println("-------------------");
 		}
+		System.out.println("Num actions: " + agent.actionList.size());
+		agent.showActions();
 		System.out.println("Performance: " + performanceMeasure() );
 	}
 }
