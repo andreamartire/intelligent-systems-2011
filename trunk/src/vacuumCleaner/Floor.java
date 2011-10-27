@@ -3,7 +3,6 @@ package vacuumCleaner;
 import java.util.Collections;
 
 import java.util.LinkedList;
-import java.util.Observable;
 import java.util.Random;
 
 public class Floor {
