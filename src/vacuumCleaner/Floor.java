@@ -74,6 +74,10 @@ public class Floor {
 					dirtySquare++;
 		return dirtySquare;
 	}
+    
+    public boolean obstacle(int i, int j) {
+		return get(i,j).type == Square.Type.OBSTACLE;
+	}
 
     public Square get(int i, int j){
         return this.floor[i][j];

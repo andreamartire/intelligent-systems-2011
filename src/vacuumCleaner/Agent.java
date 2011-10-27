@@ -64,8 +64,8 @@ public class Agent {
 			list.add(ActionType.SOUTH);
 			list.add(ActionType.EAST);
 			list.add(ActionType.WEST);
-	        Collections.shuffle(list);
-	        currAction = list.getFirst();
+			Collections.shuffle(list);
+			currAction = list.getFirst();
 		}
 	}
 	
