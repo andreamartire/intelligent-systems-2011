@@ -7,7 +7,7 @@ public class Environment {
 	public enum VisibilityType {
 		MY_CELL,
 		MY_NEIGHBOURS,
-		ALL
+		ALL 
 	}
 	
 	public enum DynamicType {
