@@ -102,7 +102,7 @@ public class Environment {
 				else if(floor.get(i, j).type == Square.Type.DIRTY)
 						sb.append("XXXXX ");
 				else
-					sb.append("-----");
+					sb.append("----- ");
 			sb.append("\n");
 		}
 		return sb.toString();
