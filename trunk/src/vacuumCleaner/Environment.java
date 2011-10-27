@@ -4,12 +4,6 @@ import java.util.ArrayList;
 
 public class Environment {
 	
-	public enum VisibilityType {
-		MY_CELL,
-		MY_NEIGHBOURS,
-		ALL
-	}
-	
 	public enum DynamicType {
 		STATIC,
 		DYNAMIC
@@ -22,18 +16,17 @@ public class Environment {
 	static int opBound = 10;
 	ActionType currAction;
 	DynamicType dynType;
-	VisibilityType visType;
 	Floor floor;
 	
 	public static void main(String[] args) {
 		int l = 5, w = 5;
-		Agent agent = new Agent(2,2,l,w);
-		Environment myEnv = Environment.create(l,w,agent,DynamicType.STATIC,VisibilityType.MY_NEIGHBOURS);
+		Agent agent = new Agent(2,2,l,w,Agent.VisibilityType.MY_NEIGHBOURS);
+		Environment myEnv = Environment.create(l,w,agent,DynamicType.STATIC);
 		myEnv.start();
 		System.out.println("-- End --");
 	}
 	
-	public Environment(int lenght, int width, Agent agent, DynamicType dynType, VisibilityType visType){
+	public Environment(int lenght, int width, Agent agent, DynamicType dynType){
 		this.lenght = lenght;
 		this.width = width;
 		this.floor = new Floor(lenght,width);
@@ -41,18 +34,17 @@ public class Environment {
 		this.agent = agent;
 		
 		this.dynType = dynType;
-		this.visType = visType;
 		
 		this.floor.generateObject(5, 0);
 	}
 	
-	public static Environment create(int lenght, int width, Agent agent, DynamicType dynType, VisibilityType visType){
-		return new Environment(lenght, width, agent, dynType, visType);
+	public static Environment create(int lenght, int width, Agent agent, DynamicType dynType){
+		return new Environment(lenght, width, agent, dynType);
 	}
 	
 	private ArrayList<Perception> getPerceptions() {
 		ArrayList<Perception> perceptions = new ArrayList<Perception>();
-		switch (visType) {
+		switch (agent.visType) {
 			case MY_CELL:
 				perceptions.add(new Perception(agent.x, agent.y, floor.get(agent.x,agent.y).type));break;
 			case MY_NEIGHBOURS:
