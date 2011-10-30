@@ -8,26 +8,23 @@ import java.util.Random;
 public class Floor {
 
     int lenght, width;
+    
+    private Square [][] floor;
 
-    Square [][] floor;
-
-    public Floor(int lenght, int width){
+    public Floor(int lenght, int width, Square.Type squareType){
         this.lenght = lenght;
         this.width = width;
         this.floor = new Square[lenght][width];
-        for (int i = 0; i < lenght; i++) {
-            for (int j = 0; j < width; j++) {
-                this.floor[i][j] = new Square();
-            }
-        }
+        for (int i = 0; i < lenght; i++)
+            for (int j = 0; j < width; j++)
+                this.floor[i][j] = new Square(squareType);
     }
 
     public void generateObject(int numDirtySquares, int numOstacles){
         LinkedList<Integer> lista = new LinkedList<Integer>();
 
-        for (int i = 0; i < lenght * width; i++) {
+        for (int i = 0; i < lenght * width; i++)
             lista.add(i);
-        }
 
         Collections.shuffle(lista);
         Random randomGen = new Random();
@@ -36,8 +33,8 @@ public class Floor {
         if (numDirtySquares + numOstacles > size){
             numDirtySquares = ( size * numDirtySquares ) / (numDirtySquares + numOstacles);
             numOstacles = size - numDirtySquares;
-            System.out.println("Dirty " + numDirtySquares);
-            System.out.println("Obstacle " + numOstacles);
+//            System.out.println("Dirty " + numDirtySquares);
+//            System.out.println("Obstacle " + numOstacles);
         }
 
         for (int i = 0; i < numDirtySquares; i++) {
@@ -61,7 +58,7 @@ public class Floor {
 		int cleanedSquare = 0;
 		for (int i = 0; i < lenght; i++)
             for (int j = 0; j < width; j++)
-				if(get(i,j).type == Square.Type.CLEAN)
+				if(get(i,j) == Square.Type.CLEAN)
 					cleanedSquare++;
 		return cleanedSquare;
 	}
@@ -70,25 +67,25 @@ public class Floor {
 		int dirtySquare = 0;
 		for (int i = 0; i < lenght; i++)
             for (int j = 0; j < width; j++)
-				if(get(i,j).type == Square.Type.DIRTY)
+				if(get(i,j) == Square.Type.DIRTY)
 					dirtySquare++;
 		return dirtySquare;
 	}
     
     public boolean obstacle(int i, int j) {
-		return get(i,j).type == Square.Type.OBSTACLE;
+		return get(i,j) == Square.Type.OBSTACLE;
 	}
 
-    public Square get(int i, int j){
-        return this.floor[i][j];
+    public Square.Type get(int i, int j){
+    	if(i<0 || j<0 || i>=lenght || j>=width)
+    		return Square.Type.UNKNOWN;
+        return this.floor[i][j].type;
     }
 
     public void set(int i, int j, Square.Type st){
+    	if(i<0 || j<0 || i>=lenght || j>=width)
+    		return;
         this.floor[i][j].type = st;
-    }
-
-    public Square.Type getType(int i, int j){
-        return this.floor[i][j].type;
     }
 
     public void setType(int i, int j, Square.Type st){

@@ -12,7 +12,7 @@ public class Agent {
 		ALL
 	}
 	
-	ArrayList<Perception> pList;
+	Perception perception;
 	int x, y;
 	int wLenght, wWidth;
 	int squaresCleanedByMe = 0;
@@ -29,31 +29,28 @@ public class Agent {
 		this.visType = visType;
 		currAction = Action.Type.NOOP;
 		actionList = new ArrayList<Action>();
-		pList = new ArrayList<Perception>();
-		pList.add(new Perception(x, y, Square.Type.DIRTY));
 	}
 	
 	public boolean goalReached(){
 		return goalReached;
 	}
 	
-	public void perceives(ArrayList<Perception> pList){
-		this.pList = pList;
-		System.out.println("My Perceptions");
-		for(int i=0; i<pList.size(); i++)
-			System.out.println(pList.get(i).x + "," + pList.get(i).y + " " + pList.get(i).state);
+	public void perceives(Perception perception){
+		this.perception = perception;
+		// TODO show perception
 	}
 
 	public void update(){
 		switch (visType) {
 			case MY_CELL:stupidBehaviour();break;
-			case MY_NEIGHBOURS:anotherStupidBehaviour();break;
-			case ALL:anotherStupidBehaviour();break;
+			case MY_NEIGHBOURS:stupidBehaviour();break;
+			case ALL:stupidBehaviour();break;
 		}
 	}
 	
 	public void stupidBehaviour(){
-		if(pList.get(0).state == Square.Type.DIRTY)
+		System.out.println("MY CELL " + x + "," + y + ": " + perception.floor.get(x,y));
+		if(perception.floor.get(x,y) == Square.Type.DIRTY)
 			currAction = Action.Type.SUCK;
 		else{
 			LinkedList<Action.Type> list = new LinkedList<Action.Type>();
@@ -66,78 +63,6 @@ public class Agent {
 		}
 	}
 	
-	public void anotherStupidBehaviour(){
-		goalReached = updateGoal();
-		//Calculate best action from current state
-		int max = Integer.MIN_VALUE;
-		currAction = Action.Type.NOOP;
-		
-		//Avoided illegal actions
-		if(x!=0){
-			Action actNord = new Action(Action.Type.NORTH, x, y);
-			System.out.println("Nord: " + actionScore(actNord));
-			if(actionScore(actNord)>max){
-				currAction = Action.Type.NORTH;
-				max = actionScore(actNord);
-			}
-		}
-		if(x!=wLenght-1){
-			Action actSud = new Action(Action.Type.SOUTH, x, y);
-			System.out.println("Sud: " + actionScore(actSud));
-			if(actionScore(actSud)>max){
-				currAction = Action.Type.SOUTH;
-				max = actionScore(actSud);
-			}
-		}
-		if(y!=wWidth-1){
-			Action actEst = new Action(Action.Type.EAST, x, y);
-			System.out.println("Est: " + actionScore(actEst));
-			if(actionScore(actEst)>max){
-				currAction = Action.Type.EAST;
-				max = actionScore(actEst);
-			}
-		}
-			
-		if(y!=0){
-			Action actOvest = new Action(Action.Type.WEST, x, y);
-			System.out.println("Ovest: " + actionScore(actOvest));
-			if(actionScore(actOvest)>max){
-				currAction = Action.Type.WEST;
-				max = actionScore(actOvest);
-			}
-		}
-		
-		Action actSuck = new Action(Action.Type.SUCK, x, y);
-		if(actionScore(actSuck)>max){
-			System.out.println("Suck: " + actionScore(actSuck));
-			currAction = Action.Type.SUCK;
-			max = actionScore(actSuck);
-		}
-		
-		if(currAction == Action.Type.SUCK && pList.get(0).state == Square.Type.DIRTY)
-			squaresCleanedByMe++;
-	}
-	
-	public int actionScore(Action actionAgent){
-		int bonus = 0;
-//		If vacuum-cleaner sucks on a dirty square
-		if(actionAgent.type == Action.Type.SUCK && pList.get(0).state == Square.Type.DIRTY)
-			bonus += 1;
-//		If vacuum-cleaner goes on a dirty square
-		if(getSquarePerceivedType(actionAgent.type) == Square.Type.DIRTY)
-			bonus += 1;
-		
-		return squaresNowCleaned() + squaresCleanedByMe + bonus - actionList.size() - 1;
-	}
-	
-	public Square.Type getSquarePerceivedType(Action.Type actionType){
-		for(int i=0; i<pList.size(); i++)
-			if(pList.get(i).x == x + Action.xVariation(actionType) &&
-					pList.get(i).y == y + Action.yVariation(actionType))
-				return pList.get(i).state;
-		return Square.Type.OBSTACLE;		
-	}
-	
 	public void showActions(){
 		for(int i=0; i<actionList.size(); i++)
 			System.out.println(actionList.get(i).type);
@@ -145,17 +70,19 @@ public class Agent {
 	
 	public int squaresNowCleaned(){
 		int cleanedSquare = 0;
-		for(int i=0; i<pList.size(); i++)
-			if(pList.get(i).state == Square.Type.CLEAN)
-				cleanedSquare++;
+		for (int i = 0; i < perception.floor.lenght; i++)
+	        for (int j = 0; j < perception.floor.width; j++)
+				if(perception.floor.get(i,j) == Square.Type.CLEAN)
+					cleanedSquare++;
 		return cleanedSquare;
 	}
 	
 	public int dirtySquares(){
 		int dirtySquare = 0;
-		for(int i=0; i<pList.size(); i++)
-			if(pList.get(i).state == Square.Type.DIRTY)
-				dirtySquare++;
+		for (int i = 0; i < perception.floor.lenght; i++)
+	        for (int j = 0; j < perception.floor.width; j++)
+				if(perception.floor.get(i,j) == Square.Type.DIRTY)
+					dirtySquare++;
 		return dirtySquare;
 	}
 	

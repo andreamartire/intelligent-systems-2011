@@ -3,7 +3,7 @@ package vacuumCleaner;
 public class Square {
 
     public enum Type {
-        CLEAN, DIRTY, OBSTACLE
+        CLEAN, DIRTY, OBSTACLE, UNKNOWN
     }
 
     public Type type = Type.CLEAN;
