@@ -9,21 +9,13 @@ public class Environment {
 		DYNAMIC
 	}
 	
-	int lenght;
-	int width;
-	Agent agent;
-	static int opBound = 10;
-	Action.Type currAction;
+	public int lenght;
+	public int width;
+	public Agent agent;
+	public static int opBound = 100;
+	public Action.Type currAction;
 	DynamicType dynType;
-	Floor floor;
-	
-	public static void main(String[] args) {
-		int l = 5, w = 5;
-		Agent agent = new Agent(0,0,l,w,Agent.VisibilityType.MY_NEIGHBOURS);
-		Environment myEnv = Environment.create(l,w,agent,DynamicType.STATIC);
-		myEnv.start();
-		System.out.println("-- End --");
-	}
+	public Floor floor;
 	
 	public Environment(int lenght, int width, Agent agent, DynamicType dynType){
 		this.lenght = lenght;
@@ -34,14 +26,14 @@ public class Environment {
 		
 		this.dynType = dynType;
 		
-		this.floor.generateObject(10, 5);
+		this.floor.generateObject(25, 7);
 	}
 	
 	public static Environment create(int lenght, int width, Agent agent, DynamicType dynType){
 		return new Environment(lenght, width, agent, dynType);
 	}
 	
-	private Perception getPerceptions() {
+	public Perception getPerceptions() {
 		Perception perception = new Perception(floor, Square.Type.UNKNOWN);
 		switch (agent.visType) {
 			case MY_CELL:
@@ -67,7 +59,7 @@ public class Environment {
 		return perception;
 	}
 
-	private void update() {
+	public void update() {
 		if(currAction == Action.Type.SUCK){
 			System.out.println("MY CELL BEFORE: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);
@@ -83,11 +75,11 @@ public class Environment {
 			agent.y--;
 	}
 
-	private void getAction(Action.Type action) {
+	public void getAction(Action.Type action) {
 		currAction = action;
 	}
 	
-	private int performanceMeasure(){
+	public int performanceMeasure(){
 		return floor.squaresNowCleaned() - agent.actionList.size();
 	}
 	
