@@ -13,13 +13,14 @@ public class Agent {
 	}
 	
 	Perception perception;
-	int x, y;
+	public int x;
+	public int y;
 	int wLenght, wWidth;
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
 	VisibilityType visType;
 	Action.Type currAction;
-	ArrayList<Action> actionList;
+	public ArrayList<Action> actionList;
 	
 	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType){
 		this.x = x;
