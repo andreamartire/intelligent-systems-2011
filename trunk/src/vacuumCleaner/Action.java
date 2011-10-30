@@ -21,8 +21,7 @@ public class Action {
 		this.sy = sy;
 	}
 	
-
-	static public int xVariation(Action.Type actionType){
+	static public int xVar(Action.Type actionType){
 		switch (actionType){
 			case NORTH:return -1;
 			case SOUTH:return 1;
@@ -30,7 +29,7 @@ public class Action {
 		return 0;
 	}
 	
-	static public int yVariation(Action.Type actionType){
+	static public int yVar(Action.Type actionType){
 		switch (actionType){
 			case EAST:return 1;
 			case WEST:return -1;
