@@ -12,7 +12,7 @@ public class Environment {
 	int lenght;
 	int width;
 	Agent agent;
-	static int opBound = 100;
+	static int opBound = 10;
 	Action.Type currAction;
 	DynamicType dynType;
 	Floor floor;
@@ -28,7 +28,7 @@ public class Environment {
 	public Environment(int lenght, int width, Agent agent, DynamicType dynType){
 		this.lenght = lenght;
 		this.width = width;
-		this.floor = new Floor(lenght,width);
+		this.floor = new Floor(lenght, width, Square.Type.CLEAN);
 		
 		this.agent = agent;
 		
@@ -41,35 +41,38 @@ public class Environment {
 		return new Environment(lenght, width, agent, dynType);
 	}
 	
-	private ArrayList<Perception> getPerceptions() {
-		ArrayList<Perception> perceptions = new ArrayList<Perception>();
+	private Perception getPerceptions() {
+		Perception perception = new Perception(floor, Square.Type.UNKNOWN);
 		switch (agent.visType) {
 			case MY_CELL:
-				System.out.println("X " + agent.x + " Y " + agent.y);
-				perceptions.add(new Perception(agent.x, agent.y, floor.get(agent.x,agent.y).type));break;
+				perception.floor.set(agent.x, agent.y, floor.get(agent.x, agent.y));
+				break;
 			case MY_NEIGHBOURS:
-				perceptions.add(new Perception(agent.x, agent.y, floor.get(agent.x,agent.y).type));
-				if(agent.x != 0)
-					perceptions.add(new Perception(agent.x-1, agent.y, floor.get(agent.x-1,agent.y).type));
-				if(agent.x != lenght-1)
-					perceptions.add(new Perception(agent.x+1, agent.y, floor.get(agent.x+1,agent.y).type));
-				if(agent.y != 0)
-					perceptions.add(new Perception(agent.x, agent.y-1, floor.get(agent.x,agent.y-1).type));
-				if(agent.y != width-1)
-					perceptions.add(new Perception(agent.x, agent.y+1, floor.get(agent.x,agent.y+1).type));
+				perception.floor.set(agent.x, agent.y, floor.get(agent.x, agent.y));
+				perception.floor.set(agent.x-1, agent.y, floor.get(agent.x-1, agent.y));
+				perception.floor.set(agent.x+1, agent.y, floor.get(agent.x+1, agent.y));
+				perception.floor.set(agent.x, agent.y-1, floor.get(agent.x, agent.y-1));
+				perception.floor.set(agent.x-1, agent.y-1, floor.get(agent.x-1, agent.y-1));
+				perception.floor.set(agent.x+1, agent.y-1, floor.get(agent.x+1, agent.y-1));
+				perception.floor.set(agent.x, agent.y+1, floor.get(agent.x, agent.y+1));
+				perception.floor.set(agent.x-1, agent.y+1, floor.get(agent.x-1, agent.y+1));
+				perception.floor.set(agent.x+1, agent.y+1, floor.get(agent.x+1, agent.y+1));
 				break;
 			case ALL:
-				for(int i=0; i<this.lenght; i++)
-					for(int j=0; j<this.width; j++)
-						perceptions.add(new Perception(i, j, this.floor.get(i, j).type));
+				for (int i = 0; i < floor.lenght; i++)
+		            for (int j = 0; j < floor.width; j++)
+		                perception.floor.set(i,j,floor.get(i, j));
 				break;
 		}
-		return perceptions;
+		return perception;
 	}
 
 	private void update() {
-		if(currAction == Action.Type.SUCK)
+		if(currAction == Action.Type.SUCK){
+			System.out.println("MY CELL BEFORE: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);
+			System.out.println("MY CELL AFTER: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));
+		}
 		if(currAction == Action.Type.NORTH && agent.x-1>=0 && !floor.obstacle(agent.x-1,agent.y))
 			agent.x--;
 		if(currAction == Action.Type.SOUTH && agent.x+1<lenght && !floor.obstacle(agent.x+1,agent.y))
@@ -95,9 +98,9 @@ public class Environment {
 				if(agent.x == i && agent.y == j)
 					sb.append("[[=]] ");
 				else
-					if(floor.get(i, j).type == Square.Type.DIRTY)
+					if(floor.get(i, j) == Square.Type.DIRTY)
 						sb.append("XXXXX ");
-				else if(floor.get(i, j).type == Square.Type.OBSTACLE)
+				else if(floor.get(i, j) == Square.Type.OBSTACLE)
 					sb.append("OOOOO ");
 				else
 					sb.append("----- ");

@@ -2,12 +2,10 @@ package vacuumCleaner;
 
 public class Perception {
 	
-	int x, y;
-	Square.Type state;
-	
-	public Perception(int x, int y, Square.Type state){
-		this.x = x;
-		this.y = y;
-		this.state = state;
+	Floor floor;
+
+	public Perception(Floor perceivedFloor, Square.Type type) {
+		super();
+		this.floor = new Floor(perceivedFloor.lenght, perceivedFloor.width, type);
 	}
 }
