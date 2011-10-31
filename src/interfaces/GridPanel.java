@@ -18,14 +18,17 @@ public class GridPanel extends JPanel {
 	private ImageIcon dirtIcon, obstacleIcon, tileIcon, vacuumIcon;
 	public int labelSize;
 	public static int iconSize = 60;
+	private Environment env;
 	
-	public GridPanel(Environment myEnv){
+	public GridPanel(Environment env){
 		super();
-		gridPanelInit(myEnv);
+		this.env = env;
+		init();
+		update();
 	}
 	
-	private void gridPanelInit(Environment myEnv) {
-		setLayout(new GridLayout(myEnv.lenght, myEnv.width));
+	private void init() {
+		setLayout(new GridLayout(env.lenght, env.width));
 		setBackground(Color.green);
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
@@ -33,11 +36,11 @@ public class GridPanel extends JPanel {
 		tileIcon = new ImageIcon(new ImageIcon("img/tile.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		vacuumIcon = new ImageIcon(new ImageIcon("img/vacuum.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		
-		labelMatrix = new JLabel[myEnv.lenght][myEnv.width];
+		labelMatrix = new JLabel[env.lenght][env.width];
 		
 		
-		for(int i=0; i<myEnv.lenght; i++)
-			for(int j=0; j<myEnv.width; j++){
+		for(int i=0; i<env.lenght; i++)
+			for(int j=0; j<env.width; j++){
 				GridBagConstraints constraints = new GridBagConstraints();
 				constraints.fill = GridBagConstraints.BOTH;
 				constraints.gridx = i;
@@ -49,16 +52,16 @@ public class GridPanel extends JPanel {
 			}
 	}
 	
-	public void gridPanelUpdate(Environment myEnv) {
-		for(int i=0; i<myEnv.lenght; i++)
-			for(int j=0; j<myEnv.width; j++){
-				if(myEnv.floor.get(i,j) == Square.Type.DIRTY)
+	public void update() {
+		for(int i=0; i<env.lenght; i++)
+			for(int j=0; j<env.width; j++){
+				if(env.floor.get(i,j) == Square.Type.DIRTY)
 					labelMatrix[i][j].setIcon(dirtIcon);
-				if(myEnv.floor.get(i,j) == Square.Type.CLEAN)
+				if(env.floor.get(i,j) == Square.Type.CLEAN)
 					labelMatrix[i][j].setIcon(tileIcon);
-				if(myEnv.floor.get(i,j) == Square.Type.OBSTACLE)
+				if(env.floor.get(i,j) == Square.Type.OBSTACLE)
 					labelMatrix[i][j].setIcon(obstacleIcon);
-				if(myEnv.agent.x == i && myEnv.agent.y == j)
+				if(env.agent.x == i && env.agent.y == j)
 					labelMatrix[i][j].setIcon(vacuumIcon);
 			}
 		repaint();
