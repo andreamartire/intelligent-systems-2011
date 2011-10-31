@@ -22,7 +22,6 @@ public class Floor {
 
     public void generateObject(int numDirtySquares, int numOstacles){
         LinkedList<Integer> lista = new LinkedList<Integer>();
-        System.out.println("Da generare " + numDirtySquares + " " + numOstacles);
 
         for (int i = 0; i < lenght * width; i++)
             lista.add(i);
@@ -34,23 +33,21 @@ public class Floor {
         if (numDirtySquares + numOstacles > size){
             numDirtySquares = ( size * numDirtySquares ) / (numDirtySquares + numOstacles);
             numOstacles = size - numDirtySquares;
-//            System.out.println("Dirty " + numDirtySquares);
-//            System.out.println("Obstacle " + numOstacles);
         }
 
         for (int i = 0; i < numDirtySquares; i++) {
             int random = Math.abs(randomGen.nextInt()) % lista.size();
             int target = lista.remove(random);
-            int l = target / lenght;
-            int w = target % lenght;
+            int l = (int) target / lenght;
+            int w = target % width;
             floor[l][w].type = Square.Type.DIRTY;
         }
 
         for (int i = 0; i < numOstacles; i++) {
             int random = Math.abs(randomGen.nextInt()) % lista.size();
             int target = lista.remove(random);
-            int l = target / lenght;
-            int w = target % lenght;
+            int l = (int) target / lenght;
+            int w = target % width;
             floor[l][w].type = Square.Type.OBSTACLE;
         }
     }

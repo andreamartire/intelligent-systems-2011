@@ -27,6 +27,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	
 	public Environment env;
 	Agent agent;
+	protected boolean stopped;
 	
 	public static void main(String[] args) {
 		new MainJFrame();
@@ -35,7 +36,6 @@ public class MainJFrame extends javax.swing.JFrame {
 	public MainJFrame() {
 		super();
 		initGUI();
-		mainLoop();
 	}
 	
 	private void initGUI() {
@@ -78,20 +78,28 @@ public class MainJFrame extends javax.swing.JFrame {
 
 	public void mainLoop(){
 		env.show();
-		gridPanel.gridPanelUpdate(env);
-		while(!agent.goalReached() && agent.actionList.size()<env.opBound){
+		while(!agent.goalReached() && agent.actionList.size()<env.opBound && !stopped){
 			agent.perceives(env.getPerceptions());
 			agent.update();
 			env.getAction(agent.action());
 			System.out.println("Action received: " + env.currAction);
 			env.update();
 			env.show();
-			gridPanel.gridPanelUpdate(env);
+			gridPanel.update();
 			System.out.println("-------------------");
 		}
 		System.out.println("Num actions: " + agent.actionList.size());
 		agent.showActions();
 		System.out.println("Performance: " + env.performanceMeasure() );
 		System.out.println("-- End --");
+	}
+
+	public void newConfig(int parseInt, int parseInt2) {
+		agent = new Agent(0,0,parseInt,parseInt2,agent.visType);
+		env = new Environment(parseInt,parseInt2,agent,env.dynType);
+		getContentPane().remove(gridPanel);
+		gridPanel = new GridPanel(env);
+		getContentPane().add(gridPanel);
+		pack();
 	}
 }

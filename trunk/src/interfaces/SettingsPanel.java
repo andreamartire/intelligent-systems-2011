@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -29,8 +30,7 @@ public class SettingsPanel extends JPanel {
 	public JFrame mainFrame;
 	
 	private JPanel commandPanel;
-	private JButton StopButton;
-	private JButton startButton;
+	private JButton controlButton;
 	private JButton generatorButton;
 	private JTextField dirtField;
 	private JLabel dirtLabel;
@@ -48,7 +48,6 @@ public class SettingsPanel extends JPanel {
 		{
 			this.mainFrame = mainFrame;
 			GridBagLayout jPanel2Layout = new GridBagLayout();
-			setBackground(Color.RED);
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
 			jPanel2Layout.rowHeights = new int[] {7, 7, 7};
 			jPanel2Layout.columnWeights = new double[] {0.1};
@@ -69,13 +68,19 @@ public class SettingsPanel extends JPanel {
 				lengthLabel.setText("Lenght");
 				lengthField = new JTextField();
 				dimensionPanel.add(lengthField);
-				lengthField.setText("7");
+				lengthField.setText("5");
+				lengthField.setAlignmentY(RIGHT_ALIGNMENT);
+				lengthField.setAlignmentX(RIGHT_ALIGNMENT);
+				lengthField.setPreferredSize(new Dimension(30, 30));
+				
 				widthLabel = new JLabel();
 				dimensionPanel.add(widthLabel);
 				widthLabel.setText("Width");
 				widthField = new JTextField();
 				dimensionPanel.add(widthField);
 				widthField.setText("5");
+				widthField.setPreferredSize(new Dimension(30, 30));
+				
 				refreshButton = new JButton();
 				dimensionPanel.add(refreshButton);
 				refreshButton.setText("Refresh");
@@ -83,14 +88,17 @@ public class SettingsPanel extends JPanel {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						mainFrame.agent = new Agent(0,0,Integer.parseInt(lengthField.getText()),
-								Integer.parseInt(widthField.getText()),mainFrame.agent.visType);
-						mainFrame.env = new Environment(Integer.parseInt(lengthField.getText()),
-								Integer.parseInt(widthField.getText()),mainFrame.agent,mainFrame.env.dynType);
-						mainFrame.getContentPane().remove(mainFrame.gridPanel);
-						mainFrame.gridPanel = new GridPanel(mainFrame.env);
-						mainFrame.getContentPane().add(mainFrame.gridPanel);
-						mainFrame.pack();
+						int l = Integer.parseInt(lengthField.getText());
+						int w = Integer.parseInt(widthField.getText());
+						if(l < 6 )
+							l = 6;
+						if(l > 20 )
+							l = 20;
+						if(w < 6 )
+							w = 6;
+						if(w > 20 )
+							w = 20;
+						mainFrame.newConfig(l,w);
 					}
 				});
 			}
@@ -110,13 +118,16 @@ public class SettingsPanel extends JPanel {
 					obstaclesLabel.setText("Obstacles");
 					obstaclesField = new JTextField();
 					GenerationPanel.add(obstaclesField);
-					obstaclesField.setText("8");
+					obstaclesField.setText("0");
+					obstaclesField.setPreferredSize(new Dimension(30, 30));
+					
 					dirtLabel = new JLabel();
 					GenerationPanel.add(dirtLabel);
 					dirtLabel.setText("Dirt");
 					dirtField = new JTextField();
 					GenerationPanel.add(dirtField);
-					dirtField.setText("7");
+					dirtField.setText("0");
+					dirtField.setPreferredSize(new Dimension(30, 30));
 
 					generatorButton = new JButton();
 					GenerationPanel.add(generatorButton);
@@ -125,8 +136,12 @@ public class SettingsPanel extends JPanel {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							mainFrame.env.floor.generateObject(	Integer.parseInt(dirtField.getText()),
-									Integer.parseInt(obstaclesField.getText()));
+							int dirt = Integer.parseInt(dirtField.getText());
+							int obstacles = Integer.parseInt(obstaclesField.getText());
+							obstaclesField.setText("0");
+							dirtField.setText("0");
+							mainFrame.env.floor.generateObject(dirt,obstacles);
+							mainFrame.gridPanel.update();
 						}
 					});
 				}
@@ -142,19 +157,28 @@ public class SettingsPanel extends JPanel {
 				
 				add(commandPanel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
-					startButton = new JButton();
-					commandPanel.add(startButton);
-					startButton.setText("Start");
-					startButton.addActionListener(new ActionListener() {
+					controlButton = new JButton();
+					commandPanel.add(controlButton);
+					controlButton.setText("Start");
+					controlButton.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							
+							if(controlButton.getText().equals("Start")){
+								controlButton.setText("Stop");
+								class myThread implements Runnable{
+									public void run() {
+										mainFrame.mainLoop();
+								    }
+								}
+								new Thread(new myThread()).start();
+								
+							}
+							else{
+								mainFrame.stopped = true;
+								controlButton.setText("Start");
+							}								
 						}
 					});
-					
-					StopButton = new JButton();
-					commandPanel.add(StopButton);
-					StopButton.setText("Stop");
 				}
 			}
 		}
