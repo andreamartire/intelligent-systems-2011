@@ -36,12 +36,10 @@ public class SettingsPanel extends JPanel {
 	private JLabel dirtLabel;
 	private JTextField obstaclesField;
 	private JLabel obstaclesLabel;
-	private JLabel widthLabel;
 	private JPanel GenerationPanel;
 	private JButton refreshButton;
-	private JTextField widthField;
-	private JTextField lengthField;
-	private JLabel lengthLabel;
+	private JTextField sizeField;
+	private JLabel sizeLabel;
 	private JPanel dimensionPanel;
 	
 	public SettingsPanel(final MainJFrame mainFrame) {
@@ -63,23 +61,12 @@ public class SettingsPanel extends JPanel {
 		        dimensionPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				
 				add(dimensionPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-				lengthLabel = new JLabel();
-				dimensionPanel.add(lengthLabel);
-				lengthLabel.setText("Lenght");
-				lengthField = new JTextField();
-				dimensionPanel.add(lengthField);
-				lengthField.setText("5");
-				lengthField.setAlignmentY(RIGHT_ALIGNMENT);
-				lengthField.setAlignmentX(RIGHT_ALIGNMENT);
-				lengthField.setPreferredSize(new Dimension(30, 30));
-				
-				widthLabel = new JLabel();
-				dimensionPanel.add(widthLabel);
-				widthLabel.setText("Width");
-				widthField = new JTextField();
-				dimensionPanel.add(widthField);
-				widthField.setText("5");
-				widthField.setPreferredSize(new Dimension(30, 30));
+				sizeLabel = new JLabel();
+				dimensionPanel.add(sizeLabel);
+				sizeLabel.setText("Size");
+				sizeField = new JTextField();
+				dimensionPanel.add(sizeField);
+				sizeField.setText("10");
 				
 				refreshButton = new JButton();
 				dimensionPanel.add(refreshButton);
@@ -88,17 +75,12 @@ public class SettingsPanel extends JPanel {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						int l = Integer.parseInt(lengthField.getText());
-						int w = Integer.parseInt(widthField.getText());
-						if(l < 6 )
-							l = 6;
-						if(l > 20 )
-							l = 20;
-						if(w < 6 )
-							w = 6;
-						if(w > 20 )
-							w = 20;
-						mainFrame.newConfig(l,w);
+						int size = Integer.parseInt(sizeField.getText());
+						if(size < 6 )
+							size = 6;
+						if(size > 20 )
+							size = 20;
+						mainFrame.newConfig(size,size);
 					}
 				});
 			}
@@ -165,6 +147,7 @@ public class SettingsPanel extends JPanel {
 						public void actionPerformed(ActionEvent arg0) {
 							if(controlButton.getText().equals("Start")){
 								controlButton.setText("Stop");
+								mainFrame.stopped = false;
 								class myThread implements Runnable{
 									public void run() {
 										mainFrame.mainLoop();
