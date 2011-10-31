@@ -14,7 +14,7 @@ public class Environment {
 	public Agent agent;
 	public static int opBound = 100;
 	public Action.Type currAction;
-	DynamicType dynType;
+	public DynamicType dynType;
 	public Floor floor;
 	
 	public Environment(int lenght, int width, Agent agent, DynamicType dynType){
@@ -23,7 +23,6 @@ public class Environment {
 		this.floor = new Floor(lenght, width, Square.Type.CLEAN);
 		this.agent = agent;
 		this.dynType = dynType;
-		this.floor.generateObject(25, 7);
 	}
 	
 	public Perception getPerceptions() {
