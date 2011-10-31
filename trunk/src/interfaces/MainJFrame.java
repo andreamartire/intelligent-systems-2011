@@ -1,16 +1,13 @@
 package interfaces;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -32,6 +29,7 @@ import vacuumCleaner.Environment.DynamicType;
 
 public class MainJFrame extends javax.swing.JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JMenuBar jMenuBar;
 	private JMenu menuFile;
 	private JMenuItem closeMenuItem;
@@ -43,7 +41,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	private JLabel dirtLabel;
 	private JTextField obstaclesField;
 	private JLabel obstaclesLabel;
-	private JPanel jPanel1;
+	private JPanel eastPanel;
 	private JLabel widthLabel;
 	private JPanel GenerationPanel;
 	private JButton refreshButton;
@@ -51,10 +49,10 @@ public class MainJFrame extends javax.swing.JFrame {
 	private JTextField lenghtField;
 	private JLabel lengthLabel;
 	private JPanel dimensionPanel;
-	private JPanel jPanel2;
-	private JPanel gridWorld;
+	private JPanel westPanel;
 	private JLabel[][] labelMatrix;
 	private ImageIcon dirtIcon, obstacleIcon, tileIcon, vacuumIcon;
+	int iconSize = 60;
 	
 	public static void main(String[] args) {
 		new MainJFrame();
@@ -68,9 +66,9 @@ public class MainJFrame extends javax.swing.JFrame {
 	
 	private void initGUI() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		BorderLayout thisLayout = new BorderLayout();
-		getContentPane().setLayout(thisLayout);
-		this.setPreferredSize(new java.awt.Dimension(675, 391));
+		getContentPane().setLayout(new GridLayout(1,2));
+		this.setSize(new java.awt.Dimension(250 + iconSize*9, iconSize*9));
+		this.setResizable(false);
 		{
 			jMenuBar = new JMenuBar();
 			setJMenuBar(jMenuBar);
@@ -93,22 +91,16 @@ public class MainJFrame extends javax.swing.JFrame {
 			}
 		}
 		{
-			jPanel1 = new JPanel();
-//			jPanel1.setBackground(Color.BLUE);
-			getContentPane().add(jPanel1, BorderLayout.EAST);
-			jPanel1.setPreferredSize(new java.awt.Dimension(353, 338));
-		}
-		{
-			jPanel2 = new JPanel();
-			getContentPane().add(jPanel2, BorderLayout.WEST);
+			westPanel = new JPanel();
+			getContentPane().add(westPanel);
 			GridBagLayout jPanel2Layout = new GridBagLayout();
-			jPanel2.setBackground(Color.RED);
-			jPanel2.setPreferredSize(new java.awt.Dimension(315, 286));
+			westPanel.setBackground(Color.RED);
+			westPanel.setSize(250, iconSize*7);
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
 			jPanel2Layout.rowHeights = new int[] {7, 7, 7};
 			jPanel2Layout.columnWeights = new double[] {0.1};
 			jPanel2Layout.columnWidths = new int[] {7};
-			jPanel2.setLayout(jPanel2Layout);
+			westPanel.setLayout(jPanel2Layout);
 			{
 				dimensionPanel = new JPanel();
 				
@@ -118,13 +110,13 @@ public class MainJFrame extends javax.swing.JFrame {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        dimensionPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				
-				jPanel2.add(dimensionPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				westPanel.add(dimensionPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				lengthLabel = new JLabel();
 				dimensionPanel.add(lengthLabel);
 				lengthLabel.setText("Lenght");
 				lenghtField = new JTextField();
 				dimensionPanel.add(lenghtField);
-				lenghtField.setText("775");
+				lenghtField.setText("7");
 				widthLabel = new JLabel();
 				dimensionPanel.add(widthLabel);
 				widthLabel.setText("Width");
@@ -144,28 +136,21 @@ public class MainJFrame extends javax.swing.JFrame {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        GenerationPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 		        
-				jPanel2.add(GenerationPanel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				westPanel.add(GenerationPanel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
 					obstaclesLabel = new JLabel();
 					GenerationPanel.add(obstaclesLabel);
 					obstaclesLabel.setText("Obstacles");
-				}
-				{
 					obstaclesField = new JTextField();
 					GenerationPanel.add(obstaclesField);
 					obstaclesField.setText("8");
-				}
-				{
 					dirtLabel = new JLabel();
 					GenerationPanel.add(dirtLabel);
 					dirtLabel.setText("Dirt");
-				}
-				{
 					dirtField = new JTextField();
 					GenerationPanel.add(dirtField);
 					dirtField.setText("7");
-				}
-				{
+
 					generatorButton = new JButton();
 					GenerationPanel.add(generatorButton);
 					generatorButton.setText("Generate");
@@ -180,22 +165,23 @@ public class MainJFrame extends javax.swing.JFrame {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        commandPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				
-				jPanel2.add(commandPanel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				westPanel.add(commandPanel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
 					startButton = new JButton();
 					commandPanel.add(startButton);
 					startButton.setText("Start");
-				}
-				{
 					StopButton = new JButton();
 					commandPanel.add(StopButton);
 					StopButton.setText("Stop");
 				}
 			}
 		}
-		
+		{
+			eastPanel = new JPanel();
+			getContentPane().add(eastPanel);
+			eastPanel.setSize(290,290);
+		}
 		pack();
-		this.setSize(675, 391);
 		this.setVisible(true);
 	}
 	
@@ -223,12 +209,8 @@ public class MainJFrame extends javax.swing.JFrame {
 	}
 
 	private void interfaceInit(Environment myEnv) {
-		gridWorld = new JPanel();
-		gridWorld.setBackground(Color.yellow);
-		jPanel1.add(gridWorld);
-		gridWorld.setLayout(new GridLayout(myEnv.lenght, myEnv.width));
-		
-		int iconSize = 50;
+		eastPanel.setLayout(new GridLayout(myEnv.lenght, myEnv.width));
+		eastPanel.setBackground(Color.green);
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		obstacleIcon = new ImageIcon(new ImageIcon("img/wall.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
@@ -236,12 +218,16 @@ public class MainJFrame extends javax.swing.JFrame {
 		vacuumIcon = new ImageIcon(new ImageIcon("img/vacuum.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		
 		labelMatrix = new JLabel[myEnv.lenght][myEnv.width];
+		
+		GridBagConstraints constraints = new GridBagConstraints();
 		for(int i=0; i<myEnv.lenght; i++)
 			for(int j=0; j<myEnv.width; j++){
+				constraints.fill = GridBagConstraints.BOTH;
+				constraints.gridx = i;
+				constraints.gridy = j;
 				JLabel label = new JLabel();
-				label.setSize(20,20);
 				labelMatrix[i][j] = label;
-				gridWorld.add(label);
+				eastPanel.add(label, constraints);
 			}
 	}
 
@@ -259,7 +245,7 @@ public class MainJFrame extends javax.swing.JFrame {
 			}
 		repaint();
 		try {
-			Thread.sleep(500);
+			Thread.sleep(250);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
