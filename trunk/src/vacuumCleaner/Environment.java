@@ -21,16 +21,9 @@ public class Environment {
 		this.lenght = lenght;
 		this.width = width;
 		this.floor = new Floor(lenght, width, Square.Type.CLEAN);
-		
 		this.agent = agent;
-		
 		this.dynType = dynType;
-		
 		this.floor.generateObject(25, 7);
-	}
-	
-	public static Environment create(int lenght, int width, Agent agent, DynamicType dynType){
-		return new Environment(lenght, width, agent, dynType);
 	}
 	
 	public Perception getPerceptions() {
