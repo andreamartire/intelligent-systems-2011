@@ -22,6 +22,7 @@ public class Floor {
 
     public void generateObject(int numDirtySquares, int numOstacles){
         LinkedList<Integer> lista = new LinkedList<Integer>();
+        System.out.println("Da generare " + numDirtySquares + " " + numOstacles);
 
         for (int i = 0; i < lenght * width; i++)
             lista.add(i);

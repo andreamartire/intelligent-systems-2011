@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 
@@ -15,11 +16,11 @@ public class GridPanel extends JPanel {
 
 	private JLabel[][] labelMatrix;
 	private ImageIcon dirtIcon, obstacleIcon, tileIcon, vacuumIcon;
-	int iconSize;
+	public int labelSize;
+	public static int iconSize = 60;
 	
-	public GridPanel(Environment myEnv, int iconSize){
+	public GridPanel(Environment myEnv){
 		super();
-		this.iconSize = iconSize;
 		gridPanelInit(myEnv);
 	}
 	
@@ -34,13 +35,15 @@ public class GridPanel extends JPanel {
 		
 		labelMatrix = new JLabel[myEnv.lenght][myEnv.width];
 		
-		GridBagConstraints constraints = new GridBagConstraints();
+		
 		for(int i=0; i<myEnv.lenght; i++)
 			for(int j=0; j<myEnv.width; j++){
+				GridBagConstraints constraints = new GridBagConstraints();
 				constraints.fill = GridBagConstraints.BOTH;
 				constraints.gridx = i;
 				constraints.gridy = j;
 				JLabel label = new JLabel();
+				label.setPreferredSize(new Dimension(iconSize,iconSize));
 				labelMatrix[i][j] = label;
 				add(label, constraints);
 			}

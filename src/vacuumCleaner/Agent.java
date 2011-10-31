@@ -18,7 +18,7 @@ public class Agent {
 	int wLenght, wWidth;
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
-	VisibilityType visType;
+	public VisibilityType visType;
 	Action.Type currAction;
 	public ArrayList<Action> actionList;
 	

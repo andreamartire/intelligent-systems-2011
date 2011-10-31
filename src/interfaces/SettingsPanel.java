@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -15,8 +18,16 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import vacuumCleaner.Agent;
+import vacuumCleaner.Environment;
+import vacuumCleaner.Floor;
+import vacuumCleaner.Square;
+import vacuumCleaner.Environment.DynamicType;
+
 public class SettingsPanel extends JPanel {
 
+	public JFrame mainFrame;
+	
 	private JPanel commandPanel;
 	private JButton StopButton;
 	private JButton startButton;
@@ -28,16 +39,16 @@ public class SettingsPanel extends JPanel {
 	private JLabel widthLabel;
 	private JPanel GenerationPanel;
 	private JButton refreshButton;
-	private JTextField jTextField1;
-	private JTextField lenghtField;
+	private JTextField widthField;
+	private JTextField lengthField;
 	private JLabel lengthLabel;
 	private JPanel dimensionPanel;
 	
-	public SettingsPanel() {
+	public SettingsPanel(final MainJFrame mainFrame) {
 		{
+			this.mainFrame = mainFrame;
 			GridBagLayout jPanel2Layout = new GridBagLayout();
 			setBackground(Color.RED);
-			setSize(270, 300);
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
 			jPanel2Layout.rowHeights = new int[] {7, 7, 7};
 			jPanel2Layout.columnWeights = new double[] {0.1};
@@ -56,18 +67,32 @@ public class SettingsPanel extends JPanel {
 				lengthLabel = new JLabel();
 				dimensionPanel.add(lengthLabel);
 				lengthLabel.setText("Lenght");
-				lenghtField = new JTextField();
-				dimensionPanel.add(lenghtField);
-				lenghtField.setText("7");
+				lengthField = new JTextField();
+				dimensionPanel.add(lengthField);
+				lengthField.setText("7");
 				widthLabel = new JLabel();
 				dimensionPanel.add(widthLabel);
 				widthLabel.setText("Width");
-				jTextField1 = new JTextField();
-				dimensionPanel.add(jTextField1);
-				jTextField1.setText("5");
+				widthField = new JTextField();
+				dimensionPanel.add(widthField);
+				widthField.setText("5");
 				refreshButton = new JButton();
 				dimensionPanel.add(refreshButton);
 				refreshButton.setText("Refresh");
+				refreshButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						mainFrame.agent = new Agent(0,0,Integer.parseInt(lengthField.getText()),
+								Integer.parseInt(widthField.getText()),mainFrame.agent.visType);
+						mainFrame.env = new Environment(Integer.parseInt(lengthField.getText()),
+								Integer.parseInt(widthField.getText()),mainFrame.agent,mainFrame.env.dynType);
+						mainFrame.getContentPane().remove(mainFrame.gridPanel);
+						mainFrame.gridPanel = new GridPanel(mainFrame.env);
+						mainFrame.getContentPane().add(mainFrame.gridPanel);
+						mainFrame.pack();
+					}
+				});
 			}
 			{
 				GenerationPanel = new JPanel();
@@ -96,6 +121,14 @@ public class SettingsPanel extends JPanel {
 					generatorButton = new JButton();
 					GenerationPanel.add(generatorButton);
 					generatorButton.setText("Generate");
+					generatorButton.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							mainFrame.env.floor.generateObject(	Integer.parseInt(dirtField.getText()),
+									Integer.parseInt(obstaclesField.getText()));
+						}
+					});
 				}
 			}
 			{
@@ -112,6 +145,13 @@ public class SettingsPanel extends JPanel {
 					startButton = new JButton();
 					commandPanel.add(startButton);
 					startButton.setText("Start");
+					startButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							
+						}
+					});
+					
 					StopButton = new JButton();
 					commandPanel.add(StopButton);
 					StopButton.setText("Stop");
