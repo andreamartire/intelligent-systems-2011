@@ -41,7 +41,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	private void initGUI() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(1,2));
-		setResizable(false);
+//		setResizable(false);
 		{
 			jMenuBar = new JMenuBar();
 			setJMenuBar(jMenuBar);
