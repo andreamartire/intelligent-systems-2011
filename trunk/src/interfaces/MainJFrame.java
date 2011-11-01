@@ -1,4 +1,5 @@
 package interfaces;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -40,7 +41,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	
 	private void initGUI() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		getContentPane().setLayout(new GridLayout(1,2));
+		getContentPane().setLayout(new BorderLayout());
 //		setResizable(false);
 		{
 			jMenuBar = new JMenuBar();
@@ -67,10 +68,10 @@ public class MainJFrame extends javax.swing.JFrame {
 		env = new Environment(rows,cols,agent,DynamicType.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
-		getContentPane().add(settingsPanel);
+		getContentPane().add(settingsPanel, BorderLayout.WEST);
 		
 		gridPanel = new GridPanel(env);
-		getContentPane().add(gridPanel);
+		getContentPane().add(gridPanel, BorderLayout.EAST);
 		
 		pack();
 		this.setVisible(true);
