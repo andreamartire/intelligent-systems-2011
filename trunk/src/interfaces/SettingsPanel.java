@@ -36,7 +36,7 @@ public class SettingsPanel extends JPanel {
 	private JLabel dirtLabel;
 	private JTextField obstaclesField;
 	private JLabel obstaclesLabel;
-	private JPanel GenerationPanel;
+	private JPanel generationPanel;
 	private JButton refreshButton;
 	private JTextField sizeField;
 	private JLabel sizeLabel;
@@ -45,6 +45,7 @@ public class SettingsPanel extends JPanel {
 	public SettingsPanel(final MainJFrame mainFrame) {
 		{
 			this.mainFrame = mainFrame;
+			setPreferredSize(new Dimension(350,300));
 			GridBagLayout jPanel2Layout = new GridBagLayout();
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
 			jPanel2Layout.rowHeights = new int[] {7, 7, 7};
@@ -53,7 +54,8 @@ public class SettingsPanel extends JPanel {
 			setLayout(jPanel2Layout);
 			{
 				dimensionPanel = new JPanel();
-				
+				dimensionPanel.setPreferredSize(new Dimension(300,100));
+				dimensionPanel.setBackground(Color.cyan);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Size Settings");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
@@ -76,43 +78,48 @@ public class SettingsPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						int size = Integer.parseInt(sizeField.getText());
-						if(size < 6 )
+						if(size < 6 ){
 							size = 6;
-						if(size > 20 )
+							sizeField.setText("6");
+						}
+						if(size > 20 ){
 							size = 20;
+							sizeField.setText("20");
+						}
 						mainFrame.newConfig(size,size);
 					}
 				});
 			}
 			{
-				GenerationPanel = new JPanel();
-				
+				generationPanel = new JPanel();
+				generationPanel.setPreferredSize(new Dimension(350,110));
+				generationPanel.setBackground(Color.blue);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Build Settings");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
 		        Border marginInside = new EmptyBorder(10,10,10,10);
-		        GenerationPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+		        generationPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 		        
-				add(GenerationPanel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				add(generationPanel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
 					obstaclesLabel = new JLabel();
-					GenerationPanel.add(obstaclesLabel);
+					generationPanel.add(obstaclesLabel);
 					obstaclesLabel.setText("Obstacles");
 					obstaclesField = new JTextField();
-					GenerationPanel.add(obstaclesField);
+					generationPanel.add(obstaclesField);
 					obstaclesField.setText("0");
 					obstaclesField.setPreferredSize(new Dimension(30, 30));
 					
 					dirtLabel = new JLabel();
-					GenerationPanel.add(dirtLabel);
+					generationPanel.add(dirtLabel);
 					dirtLabel.setText("Dirt");
 					dirtField = new JTextField();
-					GenerationPanel.add(dirtField);
+					generationPanel.add(dirtField);
 					dirtField.setText("0");
 					dirtField.setPreferredSize(new Dimension(30, 30));
 
 					generatorButton = new JButton();
-					GenerationPanel.add(generatorButton);
+					generationPanel.add(generatorButton);
 					generatorButton.setText("Generate");
 					generatorButton.addActionListener(new ActionListener() {
 						
@@ -130,7 +137,8 @@ public class SettingsPanel extends JPanel {
 			}
 			{
 				commandPanel = new JPanel();
-				
+				commandPanel.setPreferredSize(new Dimension(200,110));
+				commandPanel.setBackground(Color.black);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Commands");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
