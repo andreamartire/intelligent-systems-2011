@@ -29,7 +29,6 @@ public class GridPanel extends JPanel {
 	
 	private void init() {
 		setLayout(new GridLayout(env.lenght, env.width));
-		setBackground(Color.green);
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		obstacleIcon = new ImageIcon(new ImageIcon("img/wall.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
@@ -64,7 +63,6 @@ public class GridPanel extends JPanel {
 				if(env.agent.x == i && env.agent.y == j)
 					labelMatrix[i][j].setIcon(vacuumIcon);
 			}
-		repaint();
 		try {
 			Thread.sleep(250);
 		} catch (InterruptedException e) {

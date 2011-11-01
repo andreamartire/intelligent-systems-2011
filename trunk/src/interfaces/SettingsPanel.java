@@ -45,17 +45,16 @@ public class SettingsPanel extends JPanel {
 	public SettingsPanel(final MainJFrame mainFrame) {
 		{
 			this.mainFrame = mainFrame;
-			setPreferredSize(new Dimension(350,300));
 			GridBagLayout jPanel2Layout = new GridBagLayout();
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
-			jPanel2Layout.rowHeights = new int[] {7, 7, 7};
+			jPanel2Layout.rowHeights = new int[] {1,1,1};
 			jPanel2Layout.columnWeights = new double[] {0.1};
-			jPanel2Layout.columnWidths = new int[] {7};
+			jPanel2Layout.columnWidths = new int[] {1};
 			setLayout(jPanel2Layout);
 			{
 				dimensionPanel = new JPanel();
 				dimensionPanel.setPreferredSize(new Dimension(300,100));
-				dimensionPanel.setBackground(Color.cyan);
+//				dimensionPanel.setBackground(Color.cyan);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Size Settings");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
@@ -93,7 +92,7 @@ public class SettingsPanel extends JPanel {
 			{
 				generationPanel = new JPanel();
 				generationPanel.setPreferredSize(new Dimension(350,110));
-				generationPanel.setBackground(Color.blue);
+//				generationPanel.setBackground(Color.blue);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Build Settings");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
@@ -138,7 +137,7 @@ public class SettingsPanel extends JPanel {
 			{
 				commandPanel = new JPanel();
 				commandPanel.setPreferredSize(new Dimension(200,110));
-				commandPanel.setBackground(Color.black);
+//				commandPanel.setBackground(Color.black);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Commands");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
