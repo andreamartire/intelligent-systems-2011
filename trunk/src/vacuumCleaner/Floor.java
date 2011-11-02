@@ -85,8 +85,4 @@ public class Floor {
     		return;
         this.floor[i][j].type = st;
     }
-
-    public void setType(int i, int j, Square.Type st){
-        this.floor[i][j].type = st;
-    }
 }

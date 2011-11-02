@@ -1,5 +1,7 @@
 package vacuumCleaner;
 
+import vacuumCleaner.Square.Type;
+
 public class Environment {
 	
 	public enum DynamicType {
@@ -9,13 +11,13 @@ public class Environment {
 	
 	public int lenght;
 	public int width;
-	public Agent agent;
+	public AbstractAgent agent;
 	public int opBound = 100;
 	public Action.Type currAction;
 	public DynamicType dynType;
 	public Floor floor;
 	
-	public Environment(int lenght, int width, Agent agent, DynamicType dynType){
+	public Environment(int lenght, int width, AbstractAgent agent, DynamicType dynType){
 		this.lenght = lenght;
 		this.width = width;
 		this.floor = new Floor(lenght, width, Square.Type.CLEAN);
@@ -24,12 +26,17 @@ public class Environment {
 	}
 	
 	public Perception getPerceptions() {
-		Perception perception = new Perception(floor, Square.Type.UNKNOWN);
+		/* create a perception with a floor of unknown state */
+		Perception perception = new Perception(new Floor(width, lenght, Type.UNKNOWN));
+		/* then add informations according to the agent visibility */
 		switch (agent.visType) {
 			case MY_CELL:
+				/* add just the information about the square the agent is on */
 				perception.floor.set(agent.x, agent.y, floor.get(agent.x, agent.y));
 				break;
 			case MY_NEIGHBOURS:
+				/* add informations about the square the agent is on and the 8 squares in 
+				 * its Moore neighborhood */
 				perception.floor.set(agent.x, agent.y, floor.get(agent.x, agent.y));
 				perception.floor.set(agent.x-1, agent.y, floor.get(agent.x-1, agent.y));
 				perception.floor.set(agent.x+1, agent.y, floor.get(agent.x+1, agent.y));
@@ -41,6 +48,7 @@ public class Environment {
 				perception.floor.set(agent.x+1, agent.y+1, floor.get(agent.x+1, agent.y+1));
 				break;
 			case ALL:
+				/* add informations about all the squares */
 				for (int i = 0; i < floor.lenght; i++)
 		            for (int j = 0; j < floor.width; j++)
 		                perception.floor.set(i,j,floor.get(i, j));
@@ -49,6 +57,7 @@ public class Environment {
 		return perception;
 	}
 
+	/* update the environment state according to the action performed by the agent */
 	public void update() {
 		if(currAction == Action.Type.SUCK){
 			System.out.println("MY CELL BEFORE: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));

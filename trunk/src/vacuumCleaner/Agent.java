@@ -1,35 +1,12 @@
 package vacuumCleaner;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class Agent {
-	
-	public enum VisibilityType {
-		MY_CELL,
-		MY_NEIGHBOURS,
-		ALL
-	}
-	
-	Perception perception;
-	public int x;
-	public int y;
-	int wLenght, wWidth;
-	int squaresCleanedByMe = 0;
-	boolean goalReached = false;
-	public VisibilityType visType;
-	Action.Type currAction;
-	public ArrayList<Action> actionList;
+public class Agent extends AbstractAgent {
 	
 	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType){
-		this.x = x;
-		this.y = y;
-		this.wLenght = wLenght;
-		this.wWidth = wWidth;
-		this.visType = visType;
-		currAction = Action.Type.NOOP;
-		actionList = new ArrayList<Action>();
+		super(x, y, wLenght, wWidth, visType);
 	}
 	
 	public boolean goalReached(){
