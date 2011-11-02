@@ -1,6 +1,5 @@
 package interfaces;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,13 +18,9 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import vacuumCleaner.Agent;
-import vacuumCleaner.Environment;
-import vacuumCleaner.Floor;
-import vacuumCleaner.Square;
-import vacuumCleaner.Environment.DynamicType;
-
 public class SettingsPanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 
 	public JFrame mainFrame;
 	
