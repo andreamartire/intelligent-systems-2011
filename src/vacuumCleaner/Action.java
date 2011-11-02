@@ -12,13 +12,10 @@ public class Action {
 	}
 	
 	Action.Type type;
-	int sx, sy;
 	
 	public Action(Action.Type type, int sx, int sy) {
 		super();
 		this.type = type;
-		this.sx = sx;
-		this.sy = sy;
 	}
 	
 	static public int xVar(Action.Type actionType){
