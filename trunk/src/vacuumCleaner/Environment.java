@@ -1,7 +1,5 @@
 package vacuumCleaner;
 
-import java.util.ArrayList;
-
 public class Environment {
 	
 	public enum DynamicType {
@@ -12,7 +10,7 @@ public class Environment {
 	public int lenght;
 	public int width;
 	public Agent agent;
-	public static int opBound = 100;
+	public int opBound = 100;
 	public Action.Type currAction;
 	public DynamicType dynType;
 	public Floor floor;

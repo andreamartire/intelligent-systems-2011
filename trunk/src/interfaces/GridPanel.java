@@ -1,28 +1,29 @@
 package interfaces;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import vacuumCleaner.Environment;
 import vacuumCleaner.Square;
+import vacuumCleaner.Square.Type;
 
 public class GridPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JLabel[][] labelMatrix;
-	private ImageIcon dirtIcon, obstacleIcon, tileIcon, vacuumIcon;
+	public static ImageIcon dirtIcon, obstacleIcon, tileIcon, vacuumIcon;
 	public int labelSize;
 	public static int iconSize = 60;
-	private Environment env;
+	static Environment env;
+	
+	static Square.Type currType;
+	static ImageIcon currIcon;
 	
 	public GridPanel(Environment env){
-		super();
-		this.env = env;
+		GridPanel.env = env;
 		init();
 		update();
 	}
@@ -37,6 +38,8 @@ public class GridPanel extends JPanel {
 		
 		labelMatrix = new JLabel[env.lenght][env.width];
 		
+		currType = Type.DIRTY;
+		currIcon = dirtIcon;
 		
 		for(int i=0; i<env.lenght; i++)
 			for(int j=0; j<env.width; j++){
@@ -44,8 +47,9 @@ public class GridPanel extends JPanel {
 				constraints.fill = GridBagConstraints.BOTH;
 				constraints.gridx = i;
 				constraints.gridy = j;
-				JLabel label = new JLabel();
+				final JLabel label = new JLabel();
 				label.setPreferredSize(new Dimension(iconSize,iconSize));
+				label.addMouseListener(new ClickHandler(label,i,j));
 				labelMatrix[i][j] = label;
 				add(label, constraints);
 			}
