@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 
+import vacuumCleaner.AbstractAgent;
 import vacuumCleaner.Agent;
 import vacuumCleaner.Environment;
 import vacuumCleaner.Environment.DynamicType;
@@ -25,7 +26,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	int rows = 7, cols = 7;
 	
 	public Environment env;
-	Agent agent;
+	AbstractAgent agent;
 	protected boolean stopped;
 	
 	public static void main(String[] args) {
