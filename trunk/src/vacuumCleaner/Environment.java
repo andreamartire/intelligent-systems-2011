@@ -96,20 +96,4 @@ public class Environment {
 	public void show(){
 		System.out.println(this);
 	}
-	
-	public void start(){
-		show();
-		while(!agent.goalReached() && agent.actionList.size()<opBound){
-			agent.perceives(getPerceptions());
-			agent.update();
-			getAction(agent.action());
-			System.out.println("Action received: " + currAction);
-			update();
-			show();
-			System.out.println("-------------------");
-		}
-		System.out.println("Num actions: " + agent.actionList.size());
-		agent.showActions();
-		System.out.println("Performance: " + performanceMeasure() );
-	}
 }
