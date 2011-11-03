@@ -1,13 +1,16 @@
 package vacuumCleaner;
 
+import java.io.Serializable;
 import java.util.Collections;
 
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Floor {
+public class Floor implements Serializable {
 
-    int lenght, width;
+	private static final long	serialVersionUID	= -2524877175083650036L;
+
+	int lenght, width;
     
     private Square [][] floor;
 
@@ -61,6 +64,18 @@ public class Floor {
 		return cleanedSquare;
 	}
 	
+    public void clear(){
+		for (int i = 0; i < lenght; i++)
+            for (int j = 0; j < width; j++)
+				floor[i][j].type = Square.Type.CLEAN;
+    }
+    
+    public void load(Floor floor){
+    	this.floor = floor.floor;
+    	this.width = floor.width;
+    	this.lenght = floor.lenght;
+    }
+    
     public int dirtySquares(){
 		int dirtySquare = 0;
 		for (int i = 0; i < lenght; i++)

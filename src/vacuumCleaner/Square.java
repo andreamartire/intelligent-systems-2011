@@ -1,8 +1,12 @@
 package vacuumCleaner;
 
-public class Square {
+import java.io.Serializable;
 
-    public enum Type {
+public class Square implements Serializable {
+
+	private static final long	serialVersionUID	= -4725270244707786274L;
+
+	public enum Type {
         CLEAN, DIRTY, OBSTACLE, UNKNOWN
     }
 
