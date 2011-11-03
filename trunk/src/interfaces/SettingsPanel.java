@@ -22,6 +22,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import vacuumCleaner.Floor;
 import vacuumCleaner.AbstractAgent.VisibilityType;
 
 public class SettingsPanel extends JPanel {
@@ -138,7 +139,9 @@ public class SettingsPanel extends JPanel {
 							int obstacles = Integer.parseInt(obstaclesField.getText());
 							obstaclesField.setText("0");
 							dirtField.setText("0");
-							mainFrame.env.floor.generateObject(dirt,obstacles);
+							Floor floor = mainFrame.env.floor; 
+							floor.clear();
+							floor.generateObject(dirt,obstacles);
 							mainFrame.gridPanel.update();
 						}
 					});

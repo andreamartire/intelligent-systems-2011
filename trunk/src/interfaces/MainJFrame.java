@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 import vacuumCleaner.AbstractAgent;
 import vacuumCleaner.Agent;
 import vacuumCleaner.Environment;
+import vacuumCleaner.Floor;
 import vacuumCleaner.Environment.DynamicType;
 
 public class MainJFrame extends javax.swing.JFrame {
@@ -19,6 +20,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	private JMenuBar jMenuBar;
 	private JMenu menuFile;
 	private JMenuItem closeMenuItem;
+	private JMenuItem	openMenuItem;
 	
 	public GridPanel gridPanel;
 	private SettingsPanel settingsPanel;
@@ -28,6 +30,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	public Environment env;
 	AbstractAgent agent;
 	protected boolean stopped;
+	private JMenuItem	saveMenuItem;
 	
 	public static void main(String[] args) {
 		new MainJFrame();
@@ -50,8 +53,31 @@ public class MainJFrame extends javax.swing.JFrame {
 				jMenuBar.add(menuFile);
 				menuFile.setText("File");
 				{
+					openMenuItem = new JMenuItem();
+					openMenuItem.setText("Open");
+					openMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Serializzatore<Floor> serializzatore = new Serializzatore<Floor>();
+							Floor floor = serializzatore.carica();
+							if (floor != null){
+								env.floor.load(floor);
+								gridPanel.update();
+							}
+							serializzatore.dispose();
+						}
+					});
+					saveMenuItem = new JMenuItem();
+					saveMenuItem.setText("Save");
+					saveMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Serializzatore<Floor> serializzatore = new Serializzatore<Floor>();
+							serializzatore.salva(env.floor);
+							serializzatore.dispose();
+						}
+					});
 					closeMenuItem = new JMenuItem();
-					menuFile.add(closeMenuItem);
 					closeMenuItem.setText("Close");
 					closeMenuItem.addActionListener(new ActionListener() {
 						@Override
@@ -59,6 +85,10 @@ public class MainJFrame extends javax.swing.JFrame {
 							System.exit(0);
 						}
 					});
+					menuFile.add(openMenuItem);
+					menuFile.add(saveMenuItem);
+					menuFile.addSeparator();
+					menuFile.add(closeMenuItem);
 				}
 			}
 		}
