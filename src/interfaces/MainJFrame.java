@@ -23,7 +23,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	public GridPanel gridPanel;
 	private SettingsPanel settingsPanel;
 	
-	int rows = 7, cols = 7;
+	int rows = 10, cols = 10;
 	
 	public Environment env;
 	AbstractAgent agent;

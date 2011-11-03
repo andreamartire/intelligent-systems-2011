@@ -1,23 +1,31 @@
 package interfaces;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import vacuumCleaner.AbstractAgent.VisibilityType;
 
 public class SettingsPanel extends JPanel {
 
@@ -29,6 +37,9 @@ public class SettingsPanel extends JPanel {
 	private JTextField agentEnergyField;
 	private JLabel agentEnergylabel;
 	private JButton refreshAgentButton;
+	
+	private JLabel agentVisibilityLabel;
+	private JComboBox agentVisibilityCombobox;
 	
 	private JPanel commandPanel;
 	private JButton controlButton;
@@ -145,19 +156,45 @@ public class SettingsPanel extends JPanel {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        agentPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 		        
-		        agentPanel.setLayout(new FlowLayout());
+		        agentPanel.setLayout(new GridLayout(3,1));
+		        
+		        JPanel agentEnergyPanel = new JPanel();
+		        agentEnergyPanel.setLayout(new FlowLayout());
+		        agentPanel.add(agentEnergyPanel);
+		        
 		        agentEnergylabel = new JLabel("Energy");
-		        agentPanel.add(agentEnergylabel);
+		        agentEnergyPanel.add(agentEnergylabel);
 		        agentEnergyField = new JTextField("10");
 		        agentEnergyField.setPreferredSize(new Dimension(30, 30));
-		        agentPanel.add(agentEnergyField);
+		        agentEnergyPanel.add(agentEnergyField);
+		        
+		        JPanel agentVisibilityPanel = new JPanel();
+		        agentVisibilityPanel.setLayout(new FlowLayout());
+		        agentPanel.add(agentVisibilityPanel);
+		        
+		        agentPanel.add(agentVisibilityPanel);
+		        agentVisibilityLabel = new JLabel("Visibility");
+		        agentVisibilityPanel.add(agentVisibilityLabel);
+		        
+		        Vector<VisibilityType> visTypeVector = new Vector<VisibilityType>();
+		        visTypeVector.add(VisibilityType.MY_CELL);
+		        visTypeVector.add(VisibilityType.MY_NEIGHBOURS);
+		        visTypeVector.add(VisibilityType.ALL);
+		        agentVisibilityCombobox = new JComboBox(visTypeVector);
+		        agentVisibilityPanel.add(agentVisibilityCombobox);
+		        
+		        JPanel refreshAgentPanel = new JPanel();
+		        refreshAgentPanel.setLayout(new FlowLayout());
+		        agentPanel.add(refreshAgentPanel);
+		        
 		        refreshAgentButton = new JButton("Refresh Agent");
-		        agentPanel.add(refreshAgentButton);
+		        refreshAgentPanel.add(refreshAgentButton);
 		        refreshAgentButton.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						mainFrame.agent.opBound = Integer.parseInt(agentEnergyField.getText());
+						mainFrame.agent.visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
 					}
 				});
 			}
