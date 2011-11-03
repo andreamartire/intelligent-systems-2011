@@ -10,12 +10,12 @@ public class Floor implements Serializable {
 
 	private static final long	serialVersionUID	= -2524877175083650036L;
 
-	int lenght, width;
+	int length, width;
     
     private Square [][] floor;
 
     public Floor(int lenght, int width, Square.Type squareType){
-        this.lenght = lenght;
+        this.length = lenght;
         this.width = width;
         this.floor = new Square[lenght][width];
         for (int i = 0; i < lenght; i++)
@@ -26,7 +26,7 @@ public class Floor implements Serializable {
     public void generateObject(int numDirtySquares, int numOstacles){
         LinkedList<Integer> lista = new LinkedList<Integer>();
 
-        for (int i = 0; i < lenght * width; i++)
+        for (int i = 0; i < length * width; i++)
             lista.add(i);
 
         Collections.shuffle(lista);
@@ -41,7 +41,7 @@ public class Floor implements Serializable {
         for (int i = 0; i < numDirtySquares; i++) {
             int random = Math.abs(randomGen.nextInt()) % lista.size();
             int target = lista.remove(random);
-            int l = (int) target / lenght;
+            int l = (int) target / length;
             int w = target % width;
             floor[l][w].type = Square.Type.DIRTY;
         }
@@ -49,7 +49,7 @@ public class Floor implements Serializable {
         for (int i = 0; i < numOstacles; i++) {
             int random = Math.abs(randomGen.nextInt()) % lista.size();
             int target = lista.remove(random);
-            int l = (int) target / lenght;
+            int l = (int) target / length;
             int w = target % width;
             floor[l][w].type = Square.Type.OBSTACLE;
         }
@@ -57,7 +57,7 @@ public class Floor implements Serializable {
     
     public int squaresNowCleaned(){
 		int cleanedSquare = 0;
-		for (int i = 0; i < lenght; i++)
+		for (int i = 0; i < length; i++)
             for (int j = 0; j < width; j++)
 				if(get(i,j) == Square.Type.CLEAN)
 					cleanedSquare++;
@@ -65,7 +65,7 @@ public class Floor implements Serializable {
 	}
 	
     public void clear(){
-		for (int i = 0; i < lenght; i++)
+		for (int i = 0; i < length; i++)
             for (int j = 0; j < width; j++)
 				floor[i][j].type = Square.Type.CLEAN;
     }
@@ -73,12 +73,12 @@ public class Floor implements Serializable {
     public void load(Floor floor){
     	this.floor = floor.floor;
     	this.width = floor.width;
-    	this.lenght = floor.lenght;
+    	this.length = floor.length;
     }
     
     public int dirtySquares(){
 		int dirtySquare = 0;
-		for (int i = 0; i < lenght; i++)
+		for (int i = 0; i < length; i++)
             for (int j = 0; j < width; j++)
 				if(get(i,j) == Square.Type.DIRTY)
 					dirtySquare++;
@@ -90,13 +90,13 @@ public class Floor implements Serializable {
 	}
 
     public Square.Type get(int i, int j){
-    	if(i<0 || j<0 || i>=lenght || j>=width)
+    	if(i<0 || j<0 || i>=length || j>=width)
     		return Square.Type.UNKNOWN;
         return this.floor[i][j].type;
     }
 
     public void set(int i, int j, Square.Type st){
-    	if(i<0 || j<0 || i>=lenght || j>=width)
+    	if(i<0 || j<0 || i>=length || j>=width)
     		return;
         this.floor[i][j].type = st;
     }

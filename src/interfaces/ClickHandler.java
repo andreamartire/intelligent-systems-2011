@@ -11,10 +11,19 @@ import javax.swing.JPopupMenu;
 
 import vacuumCleaner.Square;
 
+/**
+ * Implement the mouse event to create manually an environment configuration
+ *
+ */
 public class ClickHandler extends MouseAdapter {
 	JLabel label;
 	int i,j;
 	
+	/** 
+	 * @param label label that identifies a button
+	 * @param i coordinate X of the mouse
+	 * @param j coordinate Y of the mouse
+	 */
 	ClickHandler (JLabel label, int i, int j) {
 		this.label = label;
 		this.i = i;
@@ -22,6 +31,9 @@ public class ClickHandler extends MouseAdapter {
 	}
 	
 	@Override 
+	/**
+	 * Choose and set the status of the square to clean/dirty/obstacle at mouse click
+	 */
 	public void mouseClicked (MouseEvent e) {
 		super.mouseClicked(e);
 		

@@ -15,13 +15,17 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
+/**
+ * Implement a JPanel with setting elements to interact with the environment 
+ *
+ */
 import vacuumCleaner.Floor;
 import vacuumCleaner.AbstractAgent.VisibilityType;
 
@@ -54,6 +58,12 @@ public class SettingsPanel extends JPanel {
 	private JLabel sizeLabel;
 	private JPanel dimensionPanel;
 	
+	private int max_dim= 20;
+	private int min_dim=6;
+	/**
+	 * 
+	 * @param mainFrame
+	 */
 	public SettingsPanel(final MainJFrame mainFrame) {
 		{
 			this.mainFrame = mainFrame;
@@ -72,6 +82,7 @@ public class SettingsPanel extends JPanel {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        dimensionPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				
+		        /*input field to set the size of the floor*/
 				add(dimensionPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				sizeLabel = new JLabel();
 				dimensionPanel.add(sizeLabel);
@@ -81,27 +92,33 @@ public class SettingsPanel extends JPanel {
 				sizeField.setText("10");
 				sizeField.setPreferredSize(new Dimension(30, 30));
 				
+				/*button to regenerate the floor  */
 				refreshButton = new JButton();
 				dimensionPanel.add(refreshButton);
 				refreshButton.setText("Refresh");
 				refreshButton.addActionListener(new ActionListener() {
 					
+					/*Controls the maximum size and minimum size of the floor*/
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						int size = Integer.parseInt(sizeField.getText());
-						if(size < 6 ){
-							size = 6;
-							sizeField.setText("6");
+						if(size < min_dim ){
+							size = min_dim;
+							sizeField.setText("" + min_dim);
+							JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
 						}
-						if(size > 20 ){
-							size = 20;
-							sizeField.setText("20");
+						if(size > max_dim ){
+							size = max_dim;
+							sizeField.setText("" + max_dim);
+							JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
 						}
 						mainFrame.newConfig(size,size);
+					
 					}
 				});
 			}
 			{
+				/*setting input fields*/
 				generationPanel = new JPanel();
 				generationPanel.setPreferredSize(new Dimension(350,110));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
@@ -112,6 +129,7 @@ public class SettingsPanel extends JPanel {
 		        
 				add(generationPanel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
+					/*number of obstacles*/
 					obstaclesLabel = new JLabel();
 					generationPanel.add(obstaclesLabel);
 					obstaclesLabel.setText("Obstacles");
@@ -120,6 +138,7 @@ public class SettingsPanel extends JPanel {
 					obstaclesField.setText("0");
 					obstaclesField.setPreferredSize(new Dimension(30, 30));
 					
+					/*number of dirty tiles*/
 					dirtLabel = new JLabel();
 					generationPanel.add(dirtLabel);
 					dirtLabel.setText("Dirt");
@@ -127,7 +146,8 @@ public class SettingsPanel extends JPanel {
 					generationPanel.add(dirtField);
 					dirtField.setText("0");
 					dirtField.setPreferredSize(new Dimension(30, 30));
-
+					
+					/*regenerate the floor*/
 					generatorButton = new JButton();
 					generationPanel.add(generatorButton);
 					generatorButton.setText("Generate");
@@ -209,7 +229,8 @@ public class SettingsPanel extends JPanel {
 		        commandPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				
 				add(commandPanel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-				{
+				{   
+					/*Start simulation of agent*/
 					controlButton = new JButton();
 					commandPanel.add(controlButton);
 					controlButton.setText("Start");
