@@ -58,6 +58,12 @@ public class Environment {
 
 	/* update the environment state according to the action performed by the agent */
 	public void update() {
+		
+		agent.perceives(getPerceptions());
+		agent.update();
+		getAction(agent.action());
+		System.out.println("Action received: " + currAction);
+		
 		if(currAction == Action.Type.SUCK){
 			System.out.println("MY CELL BEFORE: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));
 			floor.set(agent.x, agent.y, Square.Type.CLEAN);

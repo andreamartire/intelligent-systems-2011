@@ -79,10 +79,6 @@ public class MainJFrame extends javax.swing.JFrame {
 	public void mainLoop(){
 		env.show();
 		while(!agent.goalReached() && !stopped){
-			agent.perceives(env.getPerceptions());
-			agent.update();
-			env.getAction(agent.action());
-			System.out.println("Action received: " + env.currAction);
 			env.update();
 			env.show();
 			gridPanel.update();
