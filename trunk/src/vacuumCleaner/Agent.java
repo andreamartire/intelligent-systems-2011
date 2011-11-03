@@ -5,8 +5,8 @@ import java.util.LinkedList;
 
 public class Agent extends AbstractAgent {
 	
-	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType){
-		super(x, y, wLenght, wWidth, visType);
+	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType, int opBound){
+		super(x, y, wLenght, wWidth, visType, opBound);
 	}
 	
 	public boolean goalReached(){
@@ -27,6 +27,7 @@ public class Agent extends AbstractAgent {
 	}
 	
 	public void stupidBehaviour(){
+		updateGoal();
 		System.out.println("MY CELL " + x + "," + y + ": " + perception.floor.get(x,y));
 		if(perception.floor.get(x,y) == Square.Type.DIRTY)
 			currAction = Action.Type.SUCK;
@@ -64,12 +65,11 @@ public class Agent extends AbstractAgent {
 		return dirtySquare;
 	}
 	
-	public boolean updateGoal(){
-		if(dirtySquares()==0){
+	public void updateGoal(){
+		if(dirtySquares()==0 || actionList.size()>=opBound){
 			System.out.println("GOAL REACHED");
-			return true;
+			goalReached = true;
 		}
-		return false;
 	}
 	
 	public Action.Type action(){

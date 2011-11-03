@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,14 +25,21 @@ public class SettingsPanel extends JPanel {
 
 	public JFrame mainFrame;
 	
+	private JPanel agentPanel;
+	private JTextField agentEnergyField;
+	private JLabel agentEnergylabel;
+	private JButton refreshAgentButton;
+	
 	private JPanel commandPanel;
 	private JButton controlButton;
 	private JButton generatorButton;
+	
 	private JTextField dirtField;
 	private JLabel dirtLabel;
 	private JTextField obstaclesField;
 	private JLabel obstaclesLabel;
 	private JPanel generationPanel;
+	
 	private JButton refreshButton;
 	private JTextField sizeField;
 	private JLabel sizeLabel;
@@ -41,15 +49,14 @@ public class SettingsPanel extends JPanel {
 		{
 			this.mainFrame = mainFrame;
 			GridBagLayout jPanel2Layout = new GridBagLayout();
-			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
-			jPanel2Layout.rowHeights = new int[] {1,1,1};
+			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1, 0.1};
+			jPanel2Layout.rowHeights = new int[] {1,1,1,1};
 			jPanel2Layout.columnWeights = new double[] {0.1};
 			jPanel2Layout.columnWidths = new int[] {1};
 			setLayout(jPanel2Layout);
 			{
 				dimensionPanel = new JPanel();
 				dimensionPanel.setPreferredSize(new Dimension(300,100));
-//				dimensionPanel.setBackground(Color.cyan);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Size Settings");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
@@ -63,6 +70,7 @@ public class SettingsPanel extends JPanel {
 				sizeField = new JTextField();
 				dimensionPanel.add(sizeField);
 				sizeField.setText("10");
+				sizeField.setPreferredSize(new Dimension(30, 30));
 				
 				refreshButton = new JButton();
 				dimensionPanel.add(refreshButton);
@@ -87,7 +95,6 @@ public class SettingsPanel extends JPanel {
 			{
 				generationPanel = new JPanel();
 				generationPanel.setPreferredSize(new Dimension(350,110));
-//				generationPanel.setBackground(Color.blue);
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Build Settings");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
@@ -130,6 +137,31 @@ public class SettingsPanel extends JPanel {
 				}
 			}
 			{
+				agentPanel = new JPanel();
+				add(agentPanel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				Border marginOutside = new EmptyBorder(10,10,10,10);        
+		        TitledBorder title = BorderFactory.createTitledBorder("Agent's settings");
+		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+		        Border marginInside = new EmptyBorder(10,10,10,10);
+		        agentPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+		        
+		        agentPanel.setLayout(new FlowLayout());
+		        agentEnergylabel = new JLabel("Energy");
+		        agentPanel.add(agentEnergylabel);
+		        agentEnergyField = new JTextField("10");
+		        agentEnergyField.setPreferredSize(new Dimension(30, 30));
+		        agentPanel.add(agentEnergyField);
+		        refreshAgentButton = new JButton("Refresh Agent");
+		        agentPanel.add(refreshAgentButton);
+		        refreshAgentButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						mainFrame.agent.opBound = Integer.parseInt(agentEnergyField.getText());
+					}
+				});
+			}
+			{
 				commandPanel = new JPanel();
 				commandPanel.setPreferredSize(new Dimension(200,110));
 //				commandPanel.setBackground(Color.black);
@@ -139,7 +171,7 @@ public class SettingsPanel extends JPanel {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        commandPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				
-				add(commandPanel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				add(commandPanel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
 					controlButton = new JButton();
 					commandPanel.add(controlButton);

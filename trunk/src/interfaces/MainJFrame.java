@@ -63,7 +63,7 @@ public class MainJFrame extends javax.swing.JFrame {
 			}
 		}
 		
-		agent = new Agent(0,0,rows,cols,Agent.VisibilityType.MY_NEIGHBOURS);
+		agent = new Agent(0,0,rows,cols,Agent.VisibilityType.MY_NEIGHBOURS,10);
 		env = new Environment(rows,cols,agent,DynamicType.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
@@ -78,7 +78,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
 	public void mainLoop(){
 		env.show();
-		while(!agent.goalReached() && agent.actionList.size()<env.opBound && !stopped){
+		while(!agent.goalReached() && !stopped){
 			agent.perceives(env.getPerceptions());
 			agent.update();
 			env.getAction(agent.action());
@@ -95,7 +95,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	}
 
 	public void newConfig(int parseInt, int parseInt2) {
-		agent = new Agent(0,0,parseInt,parseInt2,agent.visType);
+		agent = new Agent(0,0,parseInt,parseInt2,agent.visType, 100);
 		env = new Environment(parseInt,parseInt2,agent,env.dynType);
 		getContentPane().remove(gridPanel);
 		gridPanel = new GridPanel(env);
