@@ -10,6 +10,10 @@ import vacuumCleaner.Environment;
 import vacuumCleaner.Square;
 import vacuumCleaner.Square.Type;
 
+/**
+ * Implement a JPanel to represent the environment and the agent
+ *
+ */
 public class GridPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -22,26 +26,35 @@ public class GridPanel extends JPanel {
 	static Square.Type currType;
 	static ImageIcon currIcon;
 	
+	/**
+	 * Generate a graphic representation of the environment and its elements
+	 * @param env an environment configuration
+	 */
 	public GridPanel(Environment env){
 		GridPanel.env = env;
 		init();
 		update();
 	}
 	
+	/**
+	 * Generate a GridLayout according with the width and length of the floor
+	 * and set the images that correspond to each element of the environment
+	 */
 	private void init() {
-		setLayout(new GridLayout(env.lenght, env.width));
+		
+		setLayout(new GridLayout(env.length, env.width));
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		obstacleIcon = new ImageIcon(new ImageIcon("img/wall.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		tileIcon = new ImageIcon(new ImageIcon("img/tile.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		vacuumIcon = new ImageIcon(new ImageIcon("img/vacuum.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		
-		labelMatrix = new JLabel[env.lenght][env.width];
+		labelMatrix = new JLabel[env.length][env.width];
 		
 		currType = Type.DIRTY;
 		currIcon = dirtIcon;
 		
-		for(int i=0; i<env.lenght; i++)
+		for(int i=0; i<env.length; i++)
 			for(int j=0; j<env.width; j++){
 				GridBagConstraints constraints = new GridBagConstraints();
 				constraints.fill = GridBagConstraints.BOTH;
@@ -54,9 +67,13 @@ public class GridPanel extends JPanel {
 				add(label, constraints);
 			}
 	}
-	
+	/**
+	 * Generate a graphic representation of the environment 
+	 * on a thread, according with the state of each tile (square)
+	 * and the position of the agent
+	 */
 	public void update() {
-		for(int i=0; i<env.lenght; i++)
+		for(int i=0; i<env.length; i++)
 			for(int j=0; j<env.width; j++){
 				if(env.floor.get(i,j) == Square.Type.DIRTY)
 					labelMatrix[i][j].setIcon(dirtIcon);

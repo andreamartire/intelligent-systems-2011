@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public abstract class AbstractAgent {
 	
+	
 	public enum VisibilityType {
 		MY_CELL,
 		MY_NEIGHBOURS,
@@ -19,16 +20,16 @@ public abstract class AbstractAgent {
 	public int y;
 	public int opBound;
 	public VisibilityType visType;
-	int wLenght, wWidth;
+	int wLength, wWidth;
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
 	Action.Type currAction;
 	public ArrayList<Action> actionList;
 	
-	public AbstractAgent(int x, int y, int wLenght, int wWidth, VisibilityType visType, int opBound){
+	public AbstractAgent(int x, int y, int wLength, int wWidth, VisibilityType visType, int opBound){
 		this.x = x;
 		this.y = y;
-		this.wLenght = wLenght;
+		this.wLength = wLength;
 		this.wWidth = wWidth;
 		this.visType = visType;
 		this.opBound = opBound;
@@ -37,29 +38,29 @@ public abstract class AbstractAgent {
 	}
 	
 	/**
-	 * @return true if the agent reach his goal
+	 * @return true if the agent has reached the goal
 	 */
 	public abstract boolean goalReached();
 
 	/**
-	 * make the agent perceives
-	 * @param perception 
+	 * Make the agent perceives from environment
+	 * @param perception current perception from the environment
 	 */
 	public abstract void perceives(Perception perception);
 
 	/**
-	 * make the agent reason
+	 * Move the agent according with the visibility
 	 */
 	public abstract void update();
 	
 	/**
-	 * print the agent performed actions
+	 * Print the performed actions by the agent
 	 */
 	public abstract void showActions();
 
 	/** 
-	 * do an action
-	 * @return the action the agent wants to do
+	 * Perform an action
+	 * @return the action the agent wants to perform
 	 */
 	public abstract Action.Type action();
 

@@ -14,6 +14,11 @@ import vacuumCleaner.Environment;
 import vacuumCleaner.Floor;
 import vacuumCleaner.Environment.DynamicType;
 
+/**
+ * Graphic interface, allow to create the environment configuration 
+ * and display the sequence of actions performed by the agent
+ *
+ */
 public class MainJFrame extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -41,6 +46,12 @@ public class MainJFrame extends javax.swing.JFrame {
 		initGUI();
 	}
 	
+	/**
+	 * Generate a default configuration 
+	 * 		Set the display Layout and menu component.
+	 * 		Create a default configuration, set the agent on position 0,0 
+	 * 		and the environment as static.
+	 */
 	private void initGUI() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
@@ -105,7 +116,10 @@ public class MainJFrame extends javax.swing.JFrame {
 		pack();
 		this.setVisible(true);
 	}
-
+    /**
+     * Execute a loop until the goal is reached and 
+     * the max number of step (opBound) is not reached
+     */
 	public void mainLoop(){
 		env.show();
 		while(!agent.goalReached() && !stopped){
@@ -119,7 +133,11 @@ public class MainJFrame extends javax.swing.JFrame {
 		System.out.println("Performance: " + env.performanceMeasure() );
 		System.out.println("-- End --");
 	}
-
+	/**
+	 * Create a new configuration according of environment
+	 * @param parseInt length of the floor
+	 * @param parseInt2 width of the floor
+	 */
 	public void newConfig(int parseInt, int parseInt2) {
 		agent = new Agent(0,0,parseInt,parseInt2,agent.visType, 100);
 		env = new Environment(parseInt,parseInt2,agent,env.dynType);
