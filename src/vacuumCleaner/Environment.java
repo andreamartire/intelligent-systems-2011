@@ -12,7 +12,6 @@ public class Environment {
 	public int lenght;
 	public int width;
 	public AbstractAgent agent;
-	public int opBound = 100;
 	public Action.Type currAction;
 	public DynamicType dynType;
 	public Floor floor;

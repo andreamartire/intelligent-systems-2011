@@ -17,19 +17,21 @@ public abstract class AbstractAgent {
 	Perception perception;
 	public int x;
 	public int y;
+	public int opBound;
+	public VisibilityType visType;
 	int wLenght, wWidth;
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
-	public VisibilityType visType;
 	Action.Type currAction;
 	public ArrayList<Action> actionList;
 	
-	public AbstractAgent(int x, int y, int wLenght, int wWidth, VisibilityType visType){
+	public AbstractAgent(int x, int y, int wLenght, int wWidth, VisibilityType visType, int opBound){
 		this.x = x;
 		this.y = y;
 		this.wLenght = wLenght;
 		this.wWidth = wWidth;
 		this.visType = visType;
+		this.opBound = opBound;
 		currAction = Action.Type.NOOP;
 		actionList = new ArrayList<Action>();
 	}
