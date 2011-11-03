@@ -66,7 +66,7 @@ public class Agent extends AbstractAgent {
 	}
 	
 	public void updateGoal(){
-		if(dirtySquares()==0 || actionList.size()>=opBound){
+		if(actionList.size()>=opBound){
 			System.out.println("GOAL REACHED");
 			goalReached = true;
 		}
