@@ -2,7 +2,17 @@ package vacuumCleaner;
 
 import vacuumCleaner.Square.Type;
 
+/**
+ * 
+ * This class implement an environment that interact with the vacuum-cleaner agent.
+ * 
+ * @see AbstractAgent
+ * @see Agent
+ * 
+ *
+ */
 public class Environment {
+
 	
 	public enum DynamicType {
 		STATIC,
@@ -19,23 +29,39 @@ public class Environment {
 	public Environment(int lenght, int width, AbstractAgent agent, DynamicType dynType){
 		this.length = lenght;
 		this.width = width;
-		this.floor = new Floor(lenght, width, Square.Type.CLEAN);
+		this.floor = new Floor(length, width, Square.Type.CLEAN);
 		this.agent = agent;
 		this.dynType = dynType;
 	}
 	
+	/**
+	 * 
+	 *  Set the perceptions according with the agent visibility.
+	 *
+	 * 		If agent's visibility is MY_CELL, just the state of cell where the agent is located,
+	 * 		will be add to the perception.
+	 *		If agent's visibility is MY_NEIGHBOURS, the state of cell where the agent is located
+	 *		and the 8 cells in its Moore neighborhood will be add to the perception.
+	 *		If agent's visibility is ALL, all the cells will be add to the perception.
+	 * 	
+	 * 		
+	 * 
+	 * @return  the current perception 
+	 * 
+	 * @see Perception
+	 */
 	public Perception getPerceptions() {
 		/* create a perception with a floor of unknown state */
 		Perception perception = new Perception(new Floor(width, length, Type.UNKNOWN));
 		/* then add informations according to the agent visibility */
 		switch (agent.visType) {
 			case MY_CELL:
-				/* add just the information about the square the agent is on */
+				/* create a perception with a floor of unknown state */
 				perception.floor.set(agent.x, agent.y, floor.get(agent.x, agent.y));
 				break;
+				
 			case MY_NEIGHBOURS:
-				/* add informations about the square the agent is on and the 8 squares in 
-				 * its Moore neighborhood */
+				/* add informations according to the agent visibility.*/
 				perception.floor.set(agent.x, agent.y, floor.get(agent.x, agent.y));
 				perception.floor.set(agent.x-1, agent.y, floor.get(agent.x-1, agent.y));
 				perception.floor.set(agent.x+1, agent.y, floor.get(agent.x+1, agent.y));
@@ -56,7 +82,10 @@ public class Environment {
 		return perception;
 	}
 
-	/* update the environment state according to the action performed by the agent */
+	/**
+	 * Update the environment state according to the action performed by the agent
+	 */
+
 	public void update() {
 		
 		agent.perceives(getPerceptions());
