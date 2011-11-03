@@ -1,7 +1,10 @@
 package vacuumCleaner;
 
 import java.io.Serializable;
-
+/**
+ * This class implements a single square.
+ * 
+ */
 public class Square implements Serializable {
 
 	private static final long	serialVersionUID	= -4725270244707786274L;
@@ -16,6 +19,11 @@ public class Square implements Serializable {
 
     }
 
+    /**
+     * Set the type of the square
+     * 
+     * @param type CLEAN, DIRTY, OBSTACLE, UNKNOWN
+     */
     public Square(Type type) {
         this.type = type;
     }    

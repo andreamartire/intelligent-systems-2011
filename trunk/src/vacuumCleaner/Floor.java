@@ -5,7 +5,12 @@ import java.util.Collections;
 
 import java.util.LinkedList;
 import java.util.Random;
-
+/**
+ *  This class implement a Floor built of a Square matrix where the agent acts.
+ * 
+ * @see Square	 
+ *
+ */
 public class Floor implements Serializable {
 
 	private static final long	serialVersionUID	= -2524877175083650036L;
@@ -13,17 +18,29 @@ public class Floor implements Serializable {
 	int length, width;
     
     private Square [][] floor;
-
-    public Floor(int lenght, int width, Square.Type squareType){
-        this.length = lenght;
+    /**
+     * 
+     * @param length		length of the floor
+     * @param width			width of the floor
+     * @param squareType	the square type (Clean, Dirty, Obstacle, Unknown)
+     */
+    public Floor(int length, int width, Square.Type squareType){
+    	
+        this.length = length;
         this.width = width;
-        this.floor = new Square[lenght][width];
-        for (int i = 0; i < lenght; i++)
+        this.floor = new Square[length][width];
+        for (int i = 0; i < length; i++)
             for (int j = 0; j < width; j++)
                 this.floor[i][j] = new Square(squareType);
     }
 
-    public void generateObject(int numDirtySquares, int numOstacles){
+    /**
+     * Generates randomly a floor scenario
+     * 
+     * @param numDirtySquares	quantity of dirty squares
+     * @param numObstacles		quantity of obstacles
+     */
+    public void generateObject(int numDirtySquares, int numObstacles){
         LinkedList<Integer> lista = new LinkedList<Integer>();
 
         for (int i = 0; i < length * width; i++)
@@ -33,9 +50,9 @@ public class Floor implements Serializable {
         Random randomGen = new Random();
         int size = lista.size();
 
-        if (numDirtySquares + numOstacles > size){
-            numDirtySquares = ( size * numDirtySquares ) / (numDirtySquares + numOstacles);
-            numOstacles = size - numDirtySquares;
+        if (numDirtySquares + numObstacles > size){
+            numDirtySquares = ( size * numDirtySquares ) / (numDirtySquares + numObstacles);
+            numObstacles = size - numDirtySquares;
         }
 
         for (int i = 0; i < numDirtySquares; i++) {
@@ -46,7 +63,7 @@ public class Floor implements Serializable {
             floor[l][w].type = Square.Type.DIRTY;
         }
 
-        for (int i = 0; i < numOstacles; i++) {
+        for (int i = 0; i < numObstacles; i++) {
             int random = Math.abs(randomGen.nextInt()) % lista.size();
             int target = lista.remove(random);
             int l = (int) target / length;
@@ -54,7 +71,10 @@ public class Floor implements Serializable {
             floor[l][w].type = Square.Type.OBSTACLE;
         }
     }
-    
+    /**
+     * 
+     * @return the current number of clean squares.
+     */
     public int squaresNowCleaned(){
 		int cleanedSquare = 0;
 		for (int i = 0; i < length; i++)
@@ -85,16 +105,37 @@ public class Floor implements Serializable {
 		return dirtySquare;
 	}
     
+    /**
+     * Confirm if there is an obstacle in the position
+     * 
+     * @param i the row position of the square
+     * @param j the column position of the square
+     * 
+     * @return TRUE if there is an obstacle.
+     */
     public boolean obstacle(int i, int j) {
 		return get(i,j) == Square.Type.OBSTACLE;
 	}
 
+    /**
+     * 
+     * @param i the row position of the square
+     * @param j the column position of the square
+     * @return the type of the square
+     */
     public Square.Type get(int i, int j){
     	if(i<0 || j<0 || i>=length || j>=width)
     		return Square.Type.UNKNOWN;
         return this.floor[i][j].type;
     }
 
+    /**
+     * Set the state of a square in the position (i,j).
+     * 
+     * @param i		the square's row
+     * @param j 	the square's column
+     * @param st	the square's state
+     */
     public void set(int i, int j, Square.Type st){
     	if(i<0 || j<0 || i>=length || j>=width)
     		return;
