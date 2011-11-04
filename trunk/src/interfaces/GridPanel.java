@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
@@ -42,7 +43,11 @@ public class GridPanel extends JPanel {
 	 */
 	private void init() {
 		
-		setLayout(new GridLayout(env.floor.length, env.floor.width));
+		setLayout(new FlowLayout());
+		
+		JPanel flowPanel = new JPanel();
+		add(flowPanel);
+		flowPanel.setLayout(new GridLayout(env.floor.length, env.floor.width));
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		obstacleIcon = new ImageIcon(new ImageIcon("img/wall.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
@@ -64,7 +69,7 @@ public class GridPanel extends JPanel {
 				label.setPreferredSize(new Dimension(iconSize,iconSize));
 				label.addMouseListener(new ClickHandler(label,i,j));
 				labelMatrix[i][j] = label;
-				add(label, constraints);
+				flowPanel.add(label, constraints);
 			}
 	}
 	/**
