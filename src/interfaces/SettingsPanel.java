@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -8,6 +9,10 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -22,11 +27,15 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 /**
  * Implement a JPanel with setting elements to interact with the environment 
  *
  */
+import vacuumCleaner.Agent;
 import vacuumCleaner.Floor;
+import vacuumCleaner.Square;
 import vacuumCleaner.AbstractAgent.VisibilityType;
 
 public class SettingsPanel extends JPanel {
@@ -35,28 +44,25 @@ public class SettingsPanel extends JPanel {
 
 	public JFrame mainFrame;
 	
-	private JPanel agentPanel;
-	private JTextField agentEnergyField;
-	private JLabel agentEnergylabel;
-	private JButton refreshAgentButton;
+	private JPanel dimensionPanel;
+	private JTextField sizeField;
+	private JLabel sizeLabel;
 	
-	private JLabel agentVisibilityLabel;
-	private JComboBox agentVisibilityCombobox;
-	
-	private JPanel commandPanel;
-	private JButton controlButton;
-	private JButton generatorButton;
-	
+	private JPanel generationPanel;
 	private JTextField dirtField;
 	private JLabel dirtLabel;
 	private JTextField obstaclesField;
 	private JLabel obstaclesLabel;
-	private JPanel generationPanel;
 	
+	private JPanel agentPanel;
+	private JTextField agentEnergyField;
+	private JLabel agentEnergylabel;
+	private JLabel agentVisibilityLabel;
+	private JComboBox agentVisibilityCombobox;
+	
+	private JPanel commandPanel;
 	private JButton refreshButton;
-	private JTextField sizeField;
-	private JLabel sizeLabel;
-	private JPanel dimensionPanel;
+	private JButton controlButton;
 	
 	private int max_dim= 20;
 	private int min_dim=6;
@@ -72,6 +78,25 @@ public class SettingsPanel extends JPanel {
 			jPanel2Layout.rowHeights = new int[] {1,1,1,1};
 			jPanel2Layout.columnWeights = new double[] {0.1};
 			jPanel2Layout.columnWidths = new int[] {1};
+			
+			DocumentListener refreshListener = (new DocumentListener() {
+				
+				@Override
+				public void removeUpdate(DocumentEvent arg0) {
+					refreshButton.setText("Refresh*");
+				}
+				
+				@Override
+				public void insertUpdate(DocumentEvent arg0) {
+					refreshButton.setText("Refresh*");
+				}
+				
+				@Override
+				public void changedUpdate(DocumentEvent arg0) {
+					refreshButton.setText("Refresh*");
+				}
+			});
+			
 			setLayout(jPanel2Layout);
 			{
 				dimensionPanel = new JPanel();
@@ -89,33 +114,9 @@ public class SettingsPanel extends JPanel {
 				sizeLabel.setText("Size");
 				sizeField = new JTextField();
 				dimensionPanel.add(sizeField);
-				sizeField.setText("10");
+				sizeField.setText("" + mainFrame.env.length);
 				sizeField.setPreferredSize(new Dimension(30, 30));
-				
-				/*button to regenerate the floor  */
-				refreshButton = new JButton();
-				dimensionPanel.add(refreshButton);
-				refreshButton.setText("Refresh");
-				refreshButton.addActionListener(new ActionListener() {
-					
-					/*Controls the maximum size and minimum size of the floor*/
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						int size = Integer.parseInt(sizeField.getText());
-						if(size < min_dim ){
-							size = min_dim;
-							sizeField.setText("" + min_dim);
-							JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
-						}
-						if(size > max_dim ){
-							size = max_dim;
-							sizeField.setText("" + max_dim);
-							JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
-						}
-						mainFrame.newConfig(size,size);
-					
-					}
-				});
+				sizeField.getDocument().addDocumentListener(refreshListener);
 			}
 			{
 				/*setting input fields*/
@@ -131,40 +132,24 @@ public class SettingsPanel extends JPanel {
 				{
 					/*number of obstacles*/
 					obstaclesLabel = new JLabel();
-					generationPanel.add(obstaclesLabel);
 					obstaclesLabel.setText("Obstacles");
 					obstaclesField = new JTextField();
-					generationPanel.add(obstaclesField);
 					obstaclesField.setText("0");
 					obstaclesField.setPreferredSize(new Dimension(30, 30));
+					obstaclesField.getDocument().addDocumentListener(refreshListener);
 					
 					/*number of dirty tiles*/
 					dirtLabel = new JLabel();
-					generationPanel.add(dirtLabel);
 					dirtLabel.setText("Dirt");
 					dirtField = new JTextField();
-					generationPanel.add(dirtField);
 					dirtField.setText("0");
 					dirtField.setPreferredSize(new Dimension(30, 30));
-					
-					/*regenerate the floor*/
-					generatorButton = new JButton();
-					generationPanel.add(generatorButton);
-					generatorButton.setText("Generate");
-					generatorButton.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							int dirt = Integer.parseInt(dirtField.getText());
-							int obstacles = Integer.parseInt(obstaclesField.getText());
-							obstaclesField.setText("0");
-							dirtField.setText("0");
-							Floor floor = mainFrame.env.floor; 
-							floor.clear();
-							floor.generateObject(dirt,obstacles);
-							mainFrame.gridPanel.update();
-						}
-					});
+					dirtField.getDocument().addDocumentListener(refreshListener);
+
+					generationPanel.add(obstaclesLabel);
+					generationPanel.add(obstaclesField);
+					generationPanel.add(dirtLabel);
+					generationPanel.add(dirtField);
 				}
 			}
 			{
@@ -184,44 +169,35 @@ public class SettingsPanel extends JPanel {
 		        
 		        agentEnergylabel = new JLabel("Energy");
 		        agentEnergyPanel.add(agentEnergylabel);
-		        agentEnergyField = new JTextField("10");
+		        agentEnergyField = new JTextField("" + mainFrame.agent.opBound);
 		        agentEnergyField.setPreferredSize(new Dimension(30, 30));
+		        agentEnergyField.getDocument().addDocumentListener(refreshListener);
 		        agentEnergyPanel.add(agentEnergyField);
 		        
 		        JPanel agentVisibilityPanel = new JPanel();
-		        agentVisibilityPanel.setLayout(new FlowLayout());
-		        agentPanel.add(agentVisibilityPanel);
 		        
 		        agentPanel.add(agentVisibilityPanel);
+		        
 		        agentVisibilityLabel = new JLabel("Visibility");
-		        agentVisibilityPanel.add(agentVisibilityLabel);
-		        
+
 		        Vector<VisibilityType> visTypeVector = new Vector<VisibilityType>();
 		        visTypeVector.add(VisibilityType.MY_CELL);
 		        visTypeVector.add(VisibilityType.MY_NEIGHBOURS);
 		        visTypeVector.add(VisibilityType.ALL);
 		        agentVisibilityCombobox = new JComboBox(visTypeVector);
+		        agentVisibilityCombobox.setSelectedItem(mainFrame.agent.visType);
+		        
+		        agentVisibilityPanel.setLayout(new FlowLayout());
+		        agentVisibilityPanel.add(agentVisibilityLabel);
 		        agentVisibilityPanel.add(agentVisibilityCombobox);
 		        
 		        JPanel refreshAgentPanel = new JPanel();
 		        refreshAgentPanel.setLayout(new FlowLayout());
 		        agentPanel.add(refreshAgentPanel);
-		        
-		        refreshAgentButton = new JButton("Refresh Agent");
-		        refreshAgentPanel.add(refreshAgentButton);
-		        refreshAgentButton.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						mainFrame.agent.opBound = Integer.parseInt(agentEnergyField.getText());
-						mainFrame.agent.visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
-					}
-				});
 			}
 			{
 				commandPanel = new JPanel();
-				commandPanel.setPreferredSize(new Dimension(200,110));
-//				commandPanel.setBackground(Color.black);
+				commandPanel.setPreferredSize(new Dimension(300,110));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 		        TitledBorder title = BorderFactory.createTitledBorder("Commands");
 		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
@@ -230,6 +206,32 @@ public class SettingsPanel extends JPanel {
 				
 				add(commandPanel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{   
+					/*Refresh current configuration*/
+					refreshButton = new JButton();
+					commandPanel.add(refreshButton);
+					refreshButton.setText("Refresh");
+					refreshButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							int size = Integer.parseInt(sizeField.getText());
+							int dirt = Integer.parseInt(dirtField.getText());
+							int obstacles = Integer.parseInt(obstaclesField.getText());
+							int energy = Integer.parseInt(agentEnergyField.getText());
+							VisibilityType visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
+							if(size < min_dim ){
+								size = min_dim;
+								sizeField.setText("" + min_dim);
+								JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
+							}
+							if(size > max_dim ){
+								size = max_dim;
+								sizeField.setText("" + max_dim);
+								JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
+							}
+							mainFrame.newConfig(size, dirt, obstacles, visType, energy);
+							refreshButton.setText("Refresh");
+						}
+					});
 					/*Start simulation of agent*/
 					controlButton = new JButton();
 					commandPanel.add(controlButton);
