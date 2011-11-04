@@ -42,20 +42,20 @@ public class GridPanel extends JPanel {
 	 */
 	private void init() {
 		
-		setLayout(new GridLayout(env.length, env.width));
+		setLayout(new GridLayout(env.floor.length, env.floor.width));
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		obstacleIcon = new ImageIcon(new ImageIcon("img/wall.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		tileIcon = new ImageIcon(new ImageIcon("img/tile.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		vacuumIcon = new ImageIcon(new ImageIcon("img/vacuum.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		
-		labelMatrix = new JLabel[env.length][env.width];
+		labelMatrix = new JLabel[env.floor.length][env.floor.width];
 		
 		currType = Type.DIRTY;
 		currIcon = dirtIcon;
 		
-		for(int i=0; i<env.length; i++)
-			for(int j=0; j<env.width; j++){
+		for(int i=0; i<env.floor.length; i++)
+			for(int j=0; j<env.floor.width; j++){
 				GridBagConstraints constraints = new GridBagConstraints();
 				constraints.fill = GridBagConstraints.BOTH;
 				constraints.gridx = i;
@@ -73,8 +73,8 @@ public class GridPanel extends JPanel {
 	 * and the position of the agent
 	 */
 	public void update() {
-		for(int i=0; i<env.length; i++)
-			for(int j=0; j<env.width; j++){
+		for(int i=0; i<env.floor.length; i++)
+			for(int j=0; j<env.floor.width; j++){
 				if(env.floor.get(i,j) == Square.Type.DIRTY)
 					labelMatrix[i][j].setIcon(dirtIcon);
 				if(env.floor.get(i,j) == Square.Type.CLEAN)

@@ -19,16 +19,12 @@ public class Environment {
 		DYNAMIC
 	}
 	
-	public int length;
-	public int width;
 	public AbstractAgent agent;
 	public Action.Type currAction;
 	public DynamicType dynType;
 	public Floor floor;
 	
-	public Environment(int lenght, int width, AbstractAgent agent, DynamicType dynType){
-		this.length = lenght;
-		this.width = width;
+	public Environment(int length, int width, AbstractAgent agent, DynamicType dynType){
 		this.floor = new Floor(length, width, Square.Type.CLEAN);
 		this.agent = agent;
 		this.dynType = dynType;
@@ -52,7 +48,7 @@ public class Environment {
 	 */
 	public Perception getPerceptions() {
 		/* create a perception with a floor of unknown state */
-		Perception perception = new Perception(new Floor(width, length, Type.UNKNOWN));
+		Perception perception = new Perception(new Floor(floor.width, floor.length, Type.UNKNOWN));
 		/* then add informations according to the agent visibility */
 		switch (agent.visType) {
 			case MY_CELL:
@@ -100,9 +96,9 @@ public class Environment {
 		}
 		if(currAction == Action.Type.NORTH && agent.x-1>=0 && !floor.obstacle(agent.x-1,agent.y))
 			agent.x--;
-		if(currAction == Action.Type.SOUTH && agent.x+1<length && !floor.obstacle(agent.x+1,agent.y))
+		if(currAction == Action.Type.SOUTH && agent.x+1<floor.length && !floor.obstacle(agent.x+1,agent.y))
 			agent.x++;
-		if(currAction == Action.Type.EAST && agent.y+1<width && !floor.obstacle(agent.x,agent.y+1))
+		if(currAction == Action.Type.EAST && agent.y+1<floor.width && !floor.obstacle(agent.x,agent.y+1))
 			agent.y++;
 		if(currAction == Action.Type.WEST && agent.y-1>=0 && !floor.obstacle(agent.x,agent.y-1))
 			agent.y--;
@@ -118,8 +114,8 @@ public class Environment {
 	
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
-		for(int i=0; i<length; i++){
-			for(int j=0; j<width; j++)
+		for(int i=0; i<floor.length; i++){
+			for(int j=0; j<floor.width; j++)
 				if(agent.x == i && agent.y == j)
 					sb.append("[[=]] ");
 				else
