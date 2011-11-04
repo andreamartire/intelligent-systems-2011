@@ -15,7 +15,9 @@ public class Floor implements Serializable {
 
 	private static final long	serialVersionUID	= -2524877175083650036L;
 
-	int length, width;
+	public int length;
+
+	public int width;
     
     private Square [][] floor;
     /**

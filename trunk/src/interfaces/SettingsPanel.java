@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
@@ -64,8 +66,8 @@ public class SettingsPanel extends JPanel {
 	private JButton refreshButton;
 	private JButton controlButton;
 	
-	private int max_dim= 20;
-	private int min_dim=6;
+	private int max_dim = 20;
+	private int min_dim = 6;
 	/**
 	 * 
 	 * @param mainFrame
@@ -114,7 +116,7 @@ public class SettingsPanel extends JPanel {
 				sizeLabel.setText("Size");
 				sizeField = new JTextField();
 				dimensionPanel.add(sizeField);
-				sizeField.setText("" + mainFrame.env.length);
+				sizeField.setText("" + mainFrame.env.floor.length);
 				sizeField.setPreferredSize(new Dimension(30, 30));
 				sizeField.getDocument().addDocumentListener(refreshListener);
 			}
@@ -186,14 +188,17 @@ public class SettingsPanel extends JPanel {
 		        visTypeVector.add(VisibilityType.ALL);
 		        agentVisibilityCombobox = new JComboBox(visTypeVector);
 		        agentVisibilityCombobox.setSelectedItem(mainFrame.agent.visType);
+		        agentVisibilityCombobox.addItemListener(new ItemListener() {
+					
+					@Override
+					public void itemStateChanged(ItemEvent arg0) {
+						refreshButton.setText("Refresh*");
+					}
+				});
 		        
 		        agentVisibilityPanel.setLayout(new FlowLayout());
 		        agentVisibilityPanel.add(agentVisibilityLabel);
 		        agentVisibilityPanel.add(agentVisibilityCombobox);
-		        
-		        JPanel refreshAgentPanel = new JPanel();
-		        refreshAgentPanel.setLayout(new FlowLayout());
-		        agentPanel.add(refreshAgentPanel);
 			}
 			{
 				commandPanel = new JPanel();
