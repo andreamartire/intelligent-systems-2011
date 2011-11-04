@@ -66,8 +66,8 @@ public class SettingsPanel extends JPanel {
 	private JButton refreshButton;
 	private JButton controlButton;
 	
-	private int max_dim = 20;
-	private int min_dim = 6;
+	private int max_dim = 12;
+	private int min_dim = 2;
 	/**
 	 * 
 	 * @param mainFrame
@@ -163,7 +163,7 @@ public class SettingsPanel extends JPanel {
 		        Border marginInside = new EmptyBorder(10,10,10,10);
 		        agentPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 		        
-		        agentPanel.setLayout(new GridLayout(3,1));
+		        agentPanel.setLayout(new GridLayout(2,1));
 		        
 		        JPanel agentEnergyPanel = new JPanel();
 		        agentEnergyPanel.setLayout(new FlowLayout());
