@@ -11,8 +11,8 @@ import java.util.LinkedList;
 
 public class Agent extends AbstractAgent {
 	
-	public Agent(int x, int y, int wLenght, int wWidth, VisibilityType visType, int opBound){
-		super(x, y, wLenght, wWidth, visType, opBound);
+	public Agent(int x, int y, VisibilityType visType, int opBound){
+		super(x, y, visType, opBound);
 	}
 	
 

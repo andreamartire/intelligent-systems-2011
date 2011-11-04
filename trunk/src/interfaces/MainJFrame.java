@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import vacuumCleaner.AbstractAgent;
 import vacuumCleaner.Agent;
 import vacuumCleaner.Environment;
 import vacuumCleaner.Floor;
+import vacuumCleaner.Square;
+import vacuumCleaner.AbstractAgent.VisibilityType;
 import vacuumCleaner.Environment.DynamicType;
 
 /**
@@ -30,7 +33,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	public GridPanel gridPanel;
 	private SettingsPanel settingsPanel;
 	
-	int rows = 10, cols = 10;
+	int size = 9;
 	
 	public Environment env;
 	AbstractAgent agent;
@@ -104,8 +107,8 @@ public class MainJFrame extends javax.swing.JFrame {
 			}
 		}
 		
-		agent = new Agent(0,0,rows,cols,Agent.VisibilityType.MY_NEIGHBOURS,10);
-		env = new Environment(rows,cols,agent,DynamicType.STATIC);
+		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 100);
+		env = new Environment(size, size, agent, DynamicType.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
 		getContentPane().add(settingsPanel, BorderLayout.WEST);
@@ -138,12 +141,14 @@ public class MainJFrame extends javax.swing.JFrame {
 	 * @param parseInt length of the floor
 	 * @param parseInt2 width of the floor
 	 */
-	public void newConfig(int parseInt, int parseInt2) {
-		agent = new Agent(0,0,parseInt,parseInt2,agent.visType, 100);
-		env = new Environment(parseInt,parseInt2,agent,env.dynType);
+	public void newConfig(int size, int dirt, int obstacles, VisibilityType visType, int energy) {
+		agent = new Agent(0, 0, visType, energy);
+		env.floor = new Floor(size, size, Square.Type.CLEAN);
+		env.floor.generateObject(dirt,obstacles);
 		getContentPane().remove(gridPanel);
 		gridPanel = new GridPanel(env);
-		getContentPane().add(gridPanel);
-		pack();
+		getContentPane().add(gridPanel, BorderLayout.EAST);
+		gridPanel.update();
+		repaint();
 	}
 }
