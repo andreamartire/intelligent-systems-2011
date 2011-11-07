@@ -7,8 +7,8 @@ Un agente si definisce tanto più intelligente quanto più è in grado di svolge
 In questa pagina è definita la misura delle prestazioni relativa all'agente aspirapolvere nel sistema in cui esso opera.
 
 Si assume la seguente interpretazione del valore di prestazione:
-  * "buona" per valori numerici grandi
-  * "cattiva" per valori numerici bassi
+  * <u>"buona"</u> per valori numerici grandi
+  * <u>"cattiva"</u> per valori numerici bassi
 
 
 = Dettagli tecnici =
@@ -21,7 +21,7 @@ Si è scelto di considerare i seguenti fattori in ordine decrescente di incidenz
 
 <font size="4"><strong>Formula</strong></font>
 
-<font size="3">*( ( 2^ncp ) / ncs ) - ( n1·db + n2·mt + n3·sp )</font>
+<font size="3">*( ( ,,2,,ncp ) / ncs ) - ( n1·db + n2·mt + n3·sp )</font>
 
 
 <font size="3">Variabili</font>
