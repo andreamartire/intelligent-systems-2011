@@ -18,8 +18,8 @@ Si è scelto di considerare i seguenti fattori in ordine decrescente di incidenz
   * *Fattore proporzionale tra celle pulite e celle sporche*
   * *Ritorno alla base* (meno importante in quanto si assume che l'aspirapolvere debba principalmente svolgere l'obiettivo della pulizia anche a discapito dell'autonomia)
 
-
-<font size="4"><strong>Formula</strong></font>
+<br>
+<font size="5"><strong>Formula</strong></font>
 
 <font size="3">*( ,,2,,ncp / ncs ) - ( n1·db + n2·mt + n3·sp )</font>
 
