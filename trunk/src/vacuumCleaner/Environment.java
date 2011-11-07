@@ -14,20 +14,20 @@ import vacuumCleaner.Square.Type;
 public class Environment {
 
 	
-	public enum DynamicType {
+	public enum Type {
 		STATIC,
 		DYNAMIC
 	}
 	
 	public AbstractAgent agent;
 	public Action.Type currAction;
-	public DynamicType dynType;
+	public Type type;
 	public Floor floor;
 	
-	public Environment(int length, int width, AbstractAgent agent, DynamicType dynType){
+	public Environment(int length, int width, AbstractAgent agent, Environment.Type dynType){
 		this.floor = new Floor(length, width, Square.Type.CLEAN);
 		this.agent = agent;
-		this.dynType = dynType;
+		this.type = dynType;
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class Environment {
 	 */
 	public Perception getPerceptions() {
 		/* create a perception with a floor of unknown state */
-		Perception perception = new Perception(new Floor(floor.width, floor.length, Type.UNKNOWN));
+		Perception perception = new Perception(new Floor(floor.width, floor.length, Square.Type.UNKNOWN));
 		/* then add informations according to the agent visibility */
 		switch (agent.visType) {
 			case MY_CELL:

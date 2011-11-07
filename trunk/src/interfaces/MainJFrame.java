@@ -15,8 +15,6 @@ import vacuumCleaner.Environment;
 import vacuumCleaner.Floor;
 import vacuumCleaner.Square;
 import vacuumCleaner.AbstractAgent.VisibilityType;
-import vacuumCleaner.Environment.DynamicType;
-
 /**
  * Graphic interface, allow to create the environment configuration 
  * and display the sequence of actions performed by the agent
@@ -76,7 +74,10 @@ public class MainJFrame extends javax.swing.JFrame {
 							Floor floor = serializzatore.carica();
 							if (floor != null){
 								env.floor.load(floor);
-								gridPanel.update();
+								remove(gridPanel);
+								gridPanel = new GridPanel(env);
+								getContentPane().add(gridPanel, BorderLayout.EAST);
+								pack();
 							}
 							serializzatore.dispose();
 						}
@@ -108,7 +109,7 @@ public class MainJFrame extends javax.swing.JFrame {
 		}
 		
 		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 100);
-		env = new Environment(size, size, agent, DynamicType.STATIC);
+		env = new Environment(size, size, agent, Environment.Type.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
 		getContentPane().add(settingsPanel, BorderLayout.WEST);
@@ -139,11 +140,12 @@ public class MainJFrame extends javax.swing.JFrame {
 	/**
 	 * Create a new configuration according of environment
 	 */
-	public void newConfig(int newSize, int dirt, int obstacles, VisibilityType visType, int energy) {
+	public void newConfig(int newSize, int dirt, int obstacles, Environment.Type envType, VisibilityType visType, int energy) {
 		System.out.println("Received size: " + newSize);
 		agent = new Agent(0, 0, visType, energy);
 		env.floor = new Floor(newSize, newSize, Square.Type.CLEAN);
 		env.floor.generateObject(dirt,obstacles);
+		env.type = envType;
 		getContentPane().remove(gridPanel);
 		gridPanel = new GridPanel(env);
 		getContentPane().add(gridPanel, BorderLayout.EAST);

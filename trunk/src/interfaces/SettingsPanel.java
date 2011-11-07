@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -31,11 +32,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.ColorUIResource;
 /**
  * Implement a JPanel with setting elements to interact with the environment 
  *
  */
 import vacuumCleaner.Agent;
+import vacuumCleaner.Environment;
+import vacuumCleaner.Environment.Type;
 import vacuumCleaner.Floor;
 import vacuumCleaner.Square;
 import vacuumCleaner.AbstractAgent.VisibilityType;
@@ -68,6 +72,9 @@ public class SettingsPanel extends JPanel {
 	
 	private int max_dim = 12;
 	private int min_dim = 2;
+
+	private JLabel envTypeLabel;
+	private JComboBox envTypeCombobox;
 	/**
 	 * 
 	 * @param mainFrame
@@ -86,16 +93,19 @@ public class SettingsPanel extends JPanel {
 				@Override
 				public void removeUpdate(DocumentEvent arg0) {
 					refreshButton.setText("Refresh*");
+					refreshButton.setBackground(Color.YELLOW);
 				}
 				
 				@Override
 				public void insertUpdate(DocumentEvent arg0) {
 					refreshButton.setText("Refresh*");
+					refreshButton.setBackground(Color.YELLOW);
 				}
 				
 				@Override
 				public void changedUpdate(DocumentEvent arg0) {
 					refreshButton.setText("Refresh*");
+					refreshButton.setBackground(Color.YELLOW);
 				}
 			});
 			
@@ -119,6 +129,25 @@ public class SettingsPanel extends JPanel {
 				sizeField.setText("" + mainFrame.env.floor.length);
 				sizeField.setPreferredSize(new Dimension(30, 30));
 				sizeField.getDocument().addDocumentListener(refreshListener);
+				
+				envTypeLabel = new JLabel("Type");
+
+		        Vector<Environment.Type> envTypeVector = new Vector<Environment.Type>();
+		        envTypeVector.add(Environment.Type.DYNAMIC);
+		        envTypeVector.add(Environment.Type.STATIC);
+		        envTypeCombobox = new JComboBox(envTypeVector);
+		        envTypeCombobox.setSelectedItem(mainFrame.env.type);
+		        envTypeCombobox.addItemListener(new ItemListener() {
+					
+					@Override
+					public void itemStateChanged(ItemEvent arg0) {
+						refreshButton.setText("Refresh*");
+						refreshButton.setBackground(Color.YELLOW);
+					}
+				});
+		        
+		        dimensionPanel.add(envTypeLabel);
+		        dimensionPanel.add(envTypeCombobox);
 			}
 			{
 				/*setting input fields*/
@@ -193,6 +222,7 @@ public class SettingsPanel extends JPanel {
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
 						refreshButton.setText("Refresh*");
+						refreshButton.setBackground(Color.YELLOW);
 					}
 				});
 		        
@@ -222,6 +252,7 @@ public class SettingsPanel extends JPanel {
 							int dirt = Integer.parseInt(dirtField.getText());
 							int obstacles = Integer.parseInt(obstaclesField.getText());
 							int energy = Integer.parseInt(agentEnergyField.getText());
+							Environment.Type envType =  (Type) envTypeCombobox.getSelectedItem();
 							VisibilityType visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
 							if(size < min_dim ){
 								size = min_dim;
@@ -233,8 +264,9 @@ public class SettingsPanel extends JPanel {
 								sizeField.setText("" + max_dim);
 								JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
 							}
-							mainFrame.newConfig(size, dirt, obstacles, visType, energy);
+							mainFrame.newConfig(size, dirt, obstacles, envType, visType, energy);
 							refreshButton.setText("Refresh");
+							refreshButton.setBackground(new ColorUIResource(238,238,238));
 						}
 					});
 					/*Start simulation of agent*/
