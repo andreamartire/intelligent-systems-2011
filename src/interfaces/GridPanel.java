@@ -41,7 +41,7 @@ public class GridPanel extends JPanel {
 	 * Generate a GridLayout according with the width and length of the floor
 	 * and set the images that correspond to each element of the environment
 	 */
-	private void init() {
+	void init() {
 		
 		setLayout(new FlowLayout());
 		
@@ -50,7 +50,7 @@ public class GridPanel extends JPanel {
 		flowPanel.setLayout(new GridLayout(env.floor.length, env.floor.width));
 		
 		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
-		obstacleIcon = new ImageIcon(new ImageIcon("img/wall.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
+		obstacleIcon = new ImageIcon(new ImageIcon("img/obstacle.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		tileIcon = new ImageIcon(new ImageIcon("img/tile.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		vacuumIcon = new ImageIcon(new ImageIcon("img/vacuum.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
 		
