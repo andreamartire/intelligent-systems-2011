@@ -24,6 +24,7 @@ Si è scelto di considerare i seguenti fattori in ordine decrescente di incidenz
 ( ( 2^ncp ) / ncs ) - ( n1·db + n2·mt + n3·sp )
 
 Variabili:
+
 ncp := numero celle pulite dall'aspirapolvere;
 ncs := numero celle sporche correnti;
 db  := distanza dalla base dell'aspirapolvere;
