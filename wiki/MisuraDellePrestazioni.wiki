@@ -4,9 +4,9 @@
 
 Un agente si definisce tanto più intelligente quanto più è in grado di svolgere le giuste azioni al momento giusto. Occorre quindi poter valutare l'operato dell'agente in qualsiasi momento mediante un modello di successo stabilito a priori che ne misuri le prestazioni.
 
-In questa pagina è definita la misura delle prestazioni relativa all'agente aspirapolvere del sistema in cui esso opera.
+In questa pagina è definita la misura delle prestazioni relativa all'agente aspirapolvere nel sistema in cui esso opera.
 
-Si assume che l'interpretazione del valore di prestazione sia la seguente:
+Si assume la seguente interpretazione del valore di prestazione:
   * "buona" per valori numerici grandi
   * "cattiva" per valori numerici bassi
 
@@ -14,9 +14,9 @@ Si assume che l'interpretazione del valore di prestazione sia la seguente:
 = Dettagli tecnici =
 
 Si è scelto di considerare i seguenti fattori in ordine decrescente di incidenza nel valore finale della misura delle prestazioni:
-  * *Massimizzazione della pulizia*: Al crescere della quantità di sporco aspirata cresce il valore della prestazione. 
+  * *Massimizzazione della pulizia* (Al crescere della quantità di sporco aspirata cresce il valore della prestazione)
   * *Fattore proporzionale tra celle pulite e celle sporche*
-  * *Ritorno alla base*
+  * *Ritorno alla base* (meno importante in quanto si assume che l'aspirapolvere debba principalmente svolgere l'obiettivo della pulizia anche a discapito dell'autonomia)
 
 
 *Formula*
