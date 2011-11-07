@@ -285,10 +285,12 @@ public class SettingsPanel extends JPanel {
 								    }
 								}
 								new Thread(new myThread()).start();
-								
 							}
 							else{
 								mainFrame.stopped = true;
+								mainFrame.env.agent.x = 0;
+								mainFrame.env.agent.y = 0;
+								mainFrame.gridPanel.update();
 								controlButton.setText("Start");
 							}								
 						}
