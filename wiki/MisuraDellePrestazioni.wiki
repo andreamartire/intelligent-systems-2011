@@ -19,20 +19,20 @@ Si è scelto di considerare i seguenti fattori in ordine decrescente di incidenz
   * *Ritorno alla base* (meno importante in quanto si assume che l'aspirapolvere debba principalmente svolgere l'obiettivo della pulizia anche a discapito dell'autonomia)
 
 
-*Formula*
+<font size="4"><strong>Formula</strong></font>
 
-( ( 2^ncp ) / ncs ) - ( n1·db + n2·mt + n3·sp )
-
-
-Variabili
-
-ncp := numero celle pulite dall'aspirapolvere;
-ncs := numero celle sporche correnti;
-db  := distanza dalla base dell'aspirapolvere;
-mt  := contatore mosse totali dell'aspirapolvere;
-sp  := valore di sparsità dello sporco;
+<font size="3">*( ( 2^ncp ) / ncs ) - ( n1·db + n2·mt + n3·sp )</font>
 
 
-Coefficienti Costanti
+<font size="3">Variabili</font>
+
+ncp := numero celle pulite dall'aspirapolvere<br>
+ncs := numero celle sporche correnti<br>
+db  := distanza dalla base dell'aspirapolvere<br>
+mt  := contatore mosse totali dell'aspirapolvere<br>
+sp  := valore di sparsità dello sporco<br>
+
+
+<font size="3">Coefficienti Costanti</font>
 
 n1, n2, n3 (da definire empiricamente)
