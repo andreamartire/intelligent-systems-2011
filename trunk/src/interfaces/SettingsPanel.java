@@ -48,7 +48,7 @@ public class SettingsPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public JFrame mainFrame;
+	public MainJFrame mainFrame;
 	
 	private JPanel dimensionPanel;
 	private JTextField sizeField;
@@ -68,7 +68,15 @@ public class SettingsPanel extends JPanel {
 	
 	private JPanel commandPanel;
 	private JButton refreshButton;
-	private JButton controlButton;
+	JButton controlButton;
+	
+	private JPanel statusPanel;
+	private JLabel pmLabel;
+	private JLabel pmValueLabel;
+	private JLabel stepsLabel;
+	private JLabel stepsValueLabel;
+	private JLabel currEnergyLabel;
+	private JLabel currEnergyValueLabel;
 	
 	private int max_dim = 12;
 	private int min_dim = 2;
@@ -165,7 +173,7 @@ public class SettingsPanel extends JPanel {
 					obstaclesLabel = new JLabel();
 					obstaclesLabel.setText("Obstacles");
 					obstaclesField = new JTextField();
-					obstaclesField.setText("0");
+					obstaclesField.setText("7");
 					obstaclesField.setPreferredSize(new Dimension(30, 30));
 					obstaclesField.getDocument().addDocumentListener(refreshListener);
 					
@@ -173,7 +181,7 @@ public class SettingsPanel extends JPanel {
 					dirtLabel = new JLabel();
 					dirtLabel.setText("Dirt");
 					dirtField = new JTextField();
-					dirtField.setText("0");
+					dirtField.setText("15");
 					dirtField.setPreferredSize(new Dimension(30, 30));
 					dirtField.getDocument().addDocumentListener(refreshListener);
 
@@ -297,7 +305,46 @@ public class SettingsPanel extends JPanel {
 					});
 				}
 			}
+			{
+				statusPanel = new JPanel();
+				Border marginOutside = new EmptyBorder(10,10,10,10);        
+		        TitledBorder title = BorderFactory.createTitledBorder("Status");
+		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+		        Border marginInside = new EmptyBorder(10,10,10,10);
+		        statusPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+				statusPanel.setLayout(new GridLayout(3,1));
+				add(statusPanel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				
+				JPanel pmPanel = new JPanel();
+				statusPanel.add(pmPanel);
+				{
+					pmLabel = new JLabel("Performance Measure:");
+					pmValueLabel = new JLabel("" + mainFrame.env.performanceMeasure());
+					pmPanel.add(pmLabel);
+					pmPanel.add(pmValueLabel);
+				}
+				JPanel stepPanel = new JPanel();
+				statusPanel.add(stepPanel);
+				{
+					stepsLabel = new JLabel("Steps Number:");
+					stepsValueLabel = new JLabel("" + mainFrame.agent.actionList.size());
+					stepPanel.add(stepsLabel);
+					stepPanel.add(stepsValueLabel);
+				}
+				JPanel currEnergyPanel = new JPanel();
+				statusPanel.add(currEnergyPanel);
+				{
+					currEnergyLabel = new JLabel("Agent's energy:");
+					currEnergyValueLabel = new JLabel("" + (mainFrame.agent.opBound - mainFrame.agent.actionList.size()));
+					currEnergyPanel.add(currEnergyLabel);
+					currEnergyPanel.add(currEnergyValueLabel);
+				}
+			}
 		}
 	}
-
+	public void update() {
+		pmValueLabel.setText("" + mainFrame.env.performanceMeasure());
+		stepsValueLabel.setText("" + mainFrame.agent.actionList.size());
+		currEnergyValueLabel.setText("" + (mainFrame.agent.opBound - mainFrame.agent.actionList.size()));
+	}
 }

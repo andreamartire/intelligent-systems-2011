@@ -109,7 +109,7 @@ public class Environment {
 	}
 	
 	public int performanceMeasure(){
-		return floor.squaresNowCleaned() - agent.actionList.size();
+		return 2*floor.squaresNowCleaned() - agent.actionList.size();
 	}
 	
 	public String toString(){

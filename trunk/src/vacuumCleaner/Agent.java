@@ -20,6 +20,7 @@ public class Agent extends AbstractAgent {
 	 * @return true if the agent has reached the goal
 	 */
 	public boolean goalReached(){
+		updateGoal();
 		return goalReached;
 	}
 	
@@ -47,7 +48,6 @@ public class Agent extends AbstractAgent {
 	 * Suck the tile if is dirty and moves around randomly if it is clean
 	 */
 	public void stupidBehaviour(){
-		updateGoal();
 		System.out.println("MY CELL " + x + "," + y + ": " + perception.floor.get(x,y));
 		if(perception.floor.get(x,y) == Square.Type.DIRTY)
 			currAction = Action.Type.SUCK;

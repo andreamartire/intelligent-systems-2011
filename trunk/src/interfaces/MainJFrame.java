@@ -108,7 +108,7 @@ public class MainJFrame extends javax.swing.JFrame {
 			}
 		}
 		
-		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 100);
+		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 20);
 		env = new Environment(size, size, agent, Environment.Type.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
@@ -130,8 +130,10 @@ public class MainJFrame extends javax.swing.JFrame {
 			env.update();
 			env.show();
 			gridPanel.update();
+			settingsPanel.update();
 			System.out.println("-------------------");
 		}
+		settingsPanel.controlButton.setText("Start");
 		System.out.println("Num actions: " + agent.actionList.size());
 		agent.showActions();
 		System.out.println("Performance: " + env.performanceMeasure() );
