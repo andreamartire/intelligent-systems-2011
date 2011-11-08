@@ -1,6 +1,6 @@
 package vacuumCleaner;
 
-import vacuumCleaner.Square.Type;
+import java.util.Random;
 
 /**
  * 
@@ -83,11 +83,18 @@ public class Environment {
 	 */
 
 	public void update() {
-		
 		agent.perceives(getPerceptions());
 		agent.update();
 		getAction(agent.action());
 		System.out.println("Action received: " + currAction);
+		
+//		if(type == Environment.Type.DYNAMIC){
+//			TODO Needs an improvement for avoid obstacles's/dirt's overwriting
+//			Random randomGen = new Random();
+//			int random = Math.abs(randomGen.nextInt()) % 2;
+//			if(random == 1)
+//				floor.generateObject(1, 0);
+//		}
 		
 		if(currAction == Action.Type.SUCK){
 			System.out.println("MY CELL BEFORE: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));
