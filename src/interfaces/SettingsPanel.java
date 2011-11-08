@@ -1,6 +1,5 @@
 package interfaces;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,18 +9,13 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,16 +27,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.ColorUIResource;
-/**
- * Implement a JPanel with setting elements to interact with the environment 
- *
- */
-import vacuumCleaner.Agent;
+
+import vacuumCleaner.AbstractAgent.VisibilityType;
 import vacuumCleaner.Environment;
 import vacuumCleaner.Environment.Type;
-import vacuumCleaner.Floor;
-import vacuumCleaner.Square;
-import vacuumCleaner.AbstractAgent.VisibilityType;
 
 public class SettingsPanel extends JPanel {
 
@@ -273,6 +261,7 @@ public class SettingsPanel extends JPanel {
 								JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
 							}
 							mainFrame.newConfig(size, dirt, obstacles, envType, visType, energy);
+							update();
 							refreshButton.setText("Refresh");
 							refreshButton.setBackground(new ColorUIResource(238,238,238));
 						}
