@@ -21,7 +21,7 @@ Si è scelto di considerare i seguenti fattori in ordine decrescente di incidenz
 <br>
 <font size="4"><strong>Formula</strong></font>
 
-<font size="4">*( ( ,,2,,ncp ) / ncs ) - ( n1·db + n2·mt + n3·sp )</font>
+<font size="4">*( ( 2^ncp^ ) / ncs ) - ( n1·db + n2·mt + n3·sp )</font>
 
 
 <font size="3">Variabili</font>
