@@ -43,14 +43,25 @@ public class Floor implements Serializable {
      * @param numObstacles		quantity of obstacles
      */
     public void generateObject(int numDirtySquares, int numObstacles){
-        LinkedList<Integer> lista = new LinkedList<Integer>();
+    	
+    	class Cell {
+    		int x, y;
+    		public Cell(int x, int y){
+    			this.x = x;
+    			this.y = y;
+    		}
+    	}
+    	
+        LinkedList<Cell> cells = new LinkedList<Cell>();
 
-        for (int i = 0; i < length * width; i++)
-            lista.add(i);
+        for (int i = 0; i < length; i++)
+        	for (int j = 0; j < width; j++)
+        		if(floor[i][j].type == Square.Type.CLEAN)
+	        		cells.add(new Cell(i, j));
 
-        Collections.shuffle(lista);
+        Collections.shuffle(cells);
         Random randomGen = new Random();
-        int size = lista.size();
+        int size = cells.size();
 
         if (numDirtySquares + numObstacles > size){
             numDirtySquares = ( size * numDirtySquares ) / (numDirtySquares + numObstacles);
@@ -58,19 +69,15 @@ public class Floor implements Serializable {
         }
 
         for (int i = 0; i < numDirtySquares; i++) {
-            int random = Math.abs(randomGen.nextInt()) % lista.size();
-            int target = lista.remove(random);
-            int l = (int) target / length;
-            int w = target % width;
-            floor[l][w].type = Square.Type.DIRTY;
+            int random = Math.abs(randomGen.nextInt()) % cells.size();
+            Cell myCell = cells.remove(random);
+            floor[myCell.x][myCell.y].type = Square.Type.DIRTY;
         }
 
         for (int i = 0; i < numObstacles; i++) {
-            int random = Math.abs(randomGen.nextInt()) % lista.size();
-            int target = lista.remove(random);
-            int l = (int) target / length;
-            int w = target % width;
-            floor[l][w].type = Square.Type.OBSTACLE;
+        	int random = Math.abs(randomGen.nextInt()) % cells.size();
+            Cell myCell = cells.remove(random);
+            floor[myCell.x][myCell.y].type = Square.Type.OBSTACLE;
         }
     }
     /**
