@@ -88,13 +88,12 @@ public class Environment {
 		getAction(agent.action());
 		System.out.println("Action received: " + currAction);
 		
-//		if(type == Environment.Type.DYNAMIC){
-//			TODO Needs an improvement for avoid obstacles's/dirt's overwriting
-//			Random randomGen = new Random();
-//			int random = Math.abs(randomGen.nextInt()) % 2;
-//			if(random == 1)
-//				floor.generateObject(1, 0);
-//		}
+		if(type == Environment.Type.DYNAMIC){
+			Random randomGen = new Random();
+			int random = Math.abs(randomGen.nextInt()) % 5;
+			if(random == 1)
+				floor.generateObject(1, 0);
+		}
 		
 		if(currAction == Action.Type.SUCK){
 			System.out.println("MY CELL BEFORE: " + agent.x + "," + agent.y + ": " + floor.get(agent.x,agent.y));
@@ -116,7 +115,20 @@ public class Environment {
 	}
 	
 	public int performanceMeasure(){
-		return 2*floor.squaresNowCleaned() - agent.actionList.size();
+		int homeDistance = (int) Math.sqrt(agent.x*agent.x + agent.y*agent.y);
+		int numOp = agent.actionList.size();
+		int currentDirt = floor.dirtySquares() + Integer.MIN_VALUE;
+		
+		int cleanedByAgent = floor.squaresNowCleaned() + Integer.MIN_VALUE;//TODO
+		int sparseness = 0;//TODO
+		
+		/*
+		 * Performance Measure
+		 * 
+		 * 2^(cleanedByAgent/currentDirt) - n1*numOp - n2*homeDistance - n3*sparseness
+		 */
+		
+		return (int) Math.pow(2,cleanedByAgent/currentDirt) - numOp - homeDistance;
 	}
 	
 	public String toString(){
