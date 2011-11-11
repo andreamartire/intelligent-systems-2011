@@ -126,6 +126,10 @@ public class Environment {
 		 * Performance Measure
 		 * 
 		 * 2^(cleanedByAgent/currentDirt) - n1*numOp - n2*homeDistance - n3*sparseness
+		 * 
+		 * cleanedByAgent = dirtyCell0 - dirtyCellT
+		 * 
+		 * 2^(cleanedByAgent/(currentDirt+T))
 		 */
 		return (int) Math.pow(2,cleanedByAgent) - numOp - homeDistance;
 	}
