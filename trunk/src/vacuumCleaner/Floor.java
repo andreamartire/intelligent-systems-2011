@@ -18,6 +18,8 @@ public class Floor implements Serializable {
 	public int length;
 
 	public int width;
+	
+	public int initialDirt;
     
     private Square [][] floor;
     /**

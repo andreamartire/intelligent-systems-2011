@@ -146,6 +146,7 @@ public class MainJFrame extends javax.swing.JFrame {
 		agent = new Agent(0, 0, visType, energy);
 		env.floor = new Floor(newSize, newSize, Square.Type.CLEAN);
 		env.floor.generateObject(dirt,obstacles);
+		env.floor.initialDirt = dirt;
 		env.floor.set(agent.x, agent.y, Square.Type.CLEAN);
 		env.agent = agent;
 		env.type = envType;

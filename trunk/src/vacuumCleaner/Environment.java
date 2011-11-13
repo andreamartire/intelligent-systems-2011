@@ -117,9 +117,9 @@ public class Environment {
 	public int performanceMeasure(){
 		int homeDistance = (int) Math.sqrt(agent.x*agent.x + agent.y*agent.y);
 		int numOp = agent.actionList.size();
-		double currentDirt = floor.dirtySquares() + 0.0001;
+		double currDirt = floor.dirtySquares();
+		double cleanedByAgent = floor.initialDirt - floor.dirtySquares();
 		
-		double cleanedByAgent = floor.squaresNowCleaned() + 0.0001;//TODO
 		int sparseness = 0;//TODO
 		
 		/*
@@ -131,7 +131,7 @@ public class Environment {
 		 * 
 		 * 2^(cleanedByAgent/(currentDirt+T))
 		 */
-		return (int) Math.pow(2,cleanedByAgent) - numOp - homeDistance;
+		return (int) (100*Math.pow(2,cleanedByAgent/(currDirt+numOp+1)) - homeDistance);
 	}
 	
 	public String toString(){
