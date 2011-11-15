@@ -119,19 +119,17 @@ public class Environment {
 		int numOp = agent.actionList.size();
 		double currDirt = floor.dirtySquares();
 		double cleanedByAgent = floor.initialDirt - floor.dirtySquares();
+		int sparsity = floor.getSparsity();
 		
-		int sparseness = 0;//TODO
-		
+//		System.out.println("Sparsity: " + sparsity);
 		/*
 		 * Performance Measure
 		 * 
-		 * 2^(cleanedByAgent/currentDirt) - n1*numOp - n2*homeDistance - n3*sparseness
+		 * 2^(cleanedByAgent/(currDirt+numOp+1)) - n1*homeDistance - n2*sparsity
 		 * 
 		 * cleanedByAgent = dirtyCell0 - dirtyCellT
-		 * 
-		 * 2^(cleanedByAgent/(currentDirt+T))
 		 */
-		return (int) (100*Math.pow(2,cleanedByAgent/(currDirt+numOp+1)) - homeDistance);
+		return (int) (100*Math.pow(2,cleanedByAgent/(currDirt+numOp+1)) - homeDistance - sparsity);
 	}
 	
 	public String toString(){
