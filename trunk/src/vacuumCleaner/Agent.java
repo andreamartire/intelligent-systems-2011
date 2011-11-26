@@ -20,7 +20,6 @@ public class Agent extends AbstractAgent {
 	 * @return true if the agent has reached the goal
 	 */
 	public boolean goalReached(){
-		updateGoal();
 		return goalReached;
 	}
 	
@@ -93,13 +92,6 @@ public class Agent extends AbstractAgent {
 				if(perception.floor.get(i,j) == Square.Type.DIRTY)
 					dirtySquare++;
 		return dirtySquare;
-	}
-	
-	public void updateGoal(){
-		if(actionList.size()>=opBound){
-			System.out.println("GOAL REACHED");
-			goalReached = true;
-		}
 	}
 	
 	/**
