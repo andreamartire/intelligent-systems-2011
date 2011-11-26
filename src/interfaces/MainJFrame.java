@@ -124,8 +124,10 @@ public class MainJFrame extends javax.swing.JFrame {
      * the max number of step (opBound) is not reached
      */
 	public void mainLoop(){
+		agent.actionList.clear();
 		env.show();
-		while(!agent.goalReached() && !stopped){
+		while(!agent.goalReached() && !stopped && agent.energy>0){
+			agent.energy--;
 			env.update();
 			env.show();
 			gridPanel.update();
@@ -160,12 +162,12 @@ public class MainJFrame extends javax.swing.JFrame {
 	/**
 	 * Create a new configuration according of environment
 	 */
-	public void newConfig(int newSize, int dirt, int obstacles, Environment.Type envType, VisibilityType visType, int energy) {
+	public void newConfig(int newSize, Environment.Type envType, VisibilityType visType, int energy) {
 		System.out.println("Received size: " + newSize);
 		agent = new Agent(0, 0, visType, energy);
 		env.floor = new Floor(newSize, newSize, Square.Type.CLEAN);
-		env.floor.generateObject(dirt,obstacles);
-		env.floor.initialDirt = dirt;
+//		env.floor.generateObject(dirt,obstacles);
+//		env.floor.initialDirt = dirt;
 		env.floor.set(agent.x, agent.y, Square.Type.CLEAN);
 		env.agent = agent;
 		env.type = envType;
