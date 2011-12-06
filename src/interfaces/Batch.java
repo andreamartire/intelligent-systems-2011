@@ -132,7 +132,7 @@ public class Batch {
 	}
 
 	private static void generaCsv(String nome, ArrayList<ItemCsv> itemCsv) {
-		CsvWriter writer = new CsvWriter(nome + ".csv");
+		CsvWriter writer = new CsvWriter("instances/"+nome + ".csv");
 		try {
 
 			for (ItemCsv csv : itemCsv) {
