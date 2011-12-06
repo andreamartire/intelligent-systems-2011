@@ -22,15 +22,15 @@ public class Batch {
 	Environment env;
 	@SuppressWarnings("rawtypes")
 	Serializzatore ser;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) {
 		ArrayList<ItemCsv> itemcsv = new ArrayList<ItemCsv>();
-		
+
 		VisibilityType[] visibilita = {VisibilityType.ALL, 
-										VisibilityType.MY_NEIGHBOURS,
-										VisibilityType.MY_CELL};
-		
+				VisibilityType.MY_NEIGHBOURS,
+				VisibilityType.MY_CELL};
+
 		Batch batch = new Batch();
 		batch.newConfig(5, Type.STATIC, VisibilityType.ALL, 200);
 		Floor floor = null;
@@ -42,10 +42,10 @@ public class Batch {
 			Method updateEnv = classEnv.getMethod("update");
 			Method showEnv = classEnv.getMethod("show");
 			Method loadFloor1 = classSerializzatore.getMethod("caricaFile", String.class);
-			
+
 			File folder = new File("instances");
-		    File[] listaIstanze = folder.listFiles();
-			
+			File[] listaIstanze = folder.listFiles();
+
 			for (VisibilityType v : visibilita) {
 				batch.agent.visType = v;
 				System.out.println("VISIBILITA " + v);
@@ -60,7 +60,7 @@ public class Batch {
 						floor = (Floor) loadFloor1.invoke(batch.ser, s.getAbsolutePath());
 						f.set(batch.env, floor);
 						showEnv.invoke(batch.env);
-						
+
 						boolean eccezione = false;
 						while (!batch.agent.goalReached() && batch.agent.energy > 0 && !eccezione) {
 							try {
@@ -75,7 +75,7 @@ public class Batch {
 								eccezione = true;
 								item.punteggio = 0;
 							}
-							
+
 						}
 						if (!eccezione) {
 							item.punteggio = batch.env.performanceMeasure();
@@ -86,7 +86,7 @@ public class Batch {
 						item.num_step = batch.agent.actionList.size(); 
 						itemcsv.add(item);
 						batch.newConfig(5, Type.STATIC, v, 200);
-				}
+					}
 				}
 			}
 			generaCsv(itemcsv);
@@ -109,7 +109,7 @@ public class Batch {
 	private static void generaCsv(ArrayList<ItemCsv> itemCsv) {
 		CsvWriter writer = new CsvWriter("csv.csv");
 		try {
-			
+
 			for (ItemCsv csv : itemCsv) {
 				writer.write(csv.nomeIstanza);
 				writer.write(String.valueOf(csv.visibilita));
