@@ -43,47 +43,50 @@ public class Batch {
 			Method showEnv = classEnv.getMethod("show");
 			Method loadFloor1 = classSerializzatore.getMethod("caricaFile", String.class);
 			
-			File file = new File("instances");
-			
-			String[] listaIstanze = file.list();
+			File folder = new File("instances");
+		    File[] listaIstanze = folder.listFiles();
 			
 			for (VisibilityType v : visibilita) {
 				batch.agent.visType = v;
-				for (String s : listaIstanze) {
-					ItemCsv item = new ItemCsv();
-					item.visibilita = v;
-					item.nomeIstanza = s;
-					Field f = classEnv.getDeclaredField("floor");
-					floor = (Floor) f.get(batch.env);
-					floor = (Floor) loadFloor1.invoke(batch.ser, file.getAbsolutePath() + "/" + s);
-					f.set(batch.env, floor);
-					showEnv.invoke(batch.env);
-					
-					boolean eccezione = false;
-					while (!batch.agent.goalReached() && batch.agent.energy > 0 && !eccezione) {
-						try {
-							long inizio = System.currentTimeMillis();
-							updateEnv.invoke(batch.env);
-							long fine = System.currentTimeMillis();
-							if (((fine-inizio)/1000) > 5) {
-								throw new Exception("Time");
-							}
-							showEnv.invoke(batch.env);
-						} catch (Exception e) {
-							eccezione = true;
-							item.punteggio = 0;
-						}
+				System.out.println("VISIBILITA " + v);
+				for (File s : listaIstanze) {
+					if(s.isFile()){
+						System.out.println("Istanza " + s);
+						ItemCsv item = new ItemCsv();
+						item.visibilita = v;
+						item.nomeIstanza = s.getName();
+						Field f = classEnv.getDeclaredField("floor");
+						floor = (Floor) f.get(batch.env);
+						floor = (Floor) loadFloor1.invoke(batch.ser, s.getAbsolutePath());
+						f.set(batch.env, floor);
+						showEnv.invoke(batch.env);
 						
-					}
-					if (!eccezione) {
-						item.punteggio = batch.env.performanceMeasure();
-						item.descrizione = "ok";
-					} else {
-						item.descrizione = "Error";
-					}
-					item.num_step = batch.agent.actionList.size(); 
-					itemcsv.add(item);
-					batch.newConfig(5, Type.STATIC, v, 200);
+						boolean eccezione = false;
+						while (!batch.agent.goalReached() && batch.agent.energy > 0 && !eccezione) {
+							try {
+								long inizio = System.currentTimeMillis();
+								updateEnv.invoke(batch.env);
+								long fine = System.currentTimeMillis();
+								if (((fine-inizio)/1000) > 5) {
+									throw new Exception("Time");
+								}
+								showEnv.invoke(batch.env);
+							} catch (Exception e) {
+								eccezione = true;
+								item.punteggio = 0;
+							}
+							
+						}
+						if (!eccezione) {
+							item.punteggio = batch.env.performanceMeasure();
+							item.descrizione = "ok";
+						} else {
+							item.descrizione = "Error";
+						}
+						item.num_step = batch.agent.actionList.size(); 
+						itemcsv.add(item);
+						batch.newConfig(5, Type.STATIC, v, 200);
+				}
 				}
 			}
 			generaCsv(itemcsv);
