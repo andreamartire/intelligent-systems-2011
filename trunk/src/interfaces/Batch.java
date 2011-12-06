@@ -66,7 +66,7 @@ public class Batch {
 					i = folder.listFiles().length;
 				}
 			if(vuota) {
-				JOptionPane.showMessageDialog(null, "La cartella instances è vuota");
+				JOptionPane.showMessageDialog(null, "La cartella instances e' vuota");
 				return;
 			}
 			
