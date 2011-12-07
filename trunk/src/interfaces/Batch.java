@@ -85,6 +85,7 @@ public class Batch {
 						floor = (Floor) f.get(batch.env);
 						floor = (Floor) loadFloor1.invoke(batch.ser, s.getAbsolutePath());
 						f.set(batch.env, floor);
+						floor.initialDirt = floor.dirtySquares();
 						showEnv.invoke(batch.env);
 
 						boolean eccezione = false;
@@ -132,7 +133,7 @@ public class Batch {
 	}
 
 	private static void generaCsv(String nome, ArrayList<ItemCsv> itemCsv) {
-		CsvWriter writer = new CsvWriter("instances/"+nome + ".csv");
+		CsvWriter writer = new CsvWriter(nome + ".csv");
 		try {
 
 			for (ItemCsv csv : itemCsv) {
